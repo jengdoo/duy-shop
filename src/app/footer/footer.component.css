@@ -1,0 +1,53 @@
+/* footer */
+footer {
+  margin-top: 55px;
+}
+.footer {
+  background-color: #ddd;
+  color: #333;
+}
+.footer-container {
+  padding: 55px 0;
+}
+.footer-container h3 {
+  font-size: 18px;
+  font-weight: 700;
+}
+.footer-container p {
+  font-size: 16px;
+  font-weight: 400;
+  margin-top: 20px;
+  line-height: 28px;
+  color: #000;
+}
+.footer-container p:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  color: #333;
+}
+.footer-connect {
+  display: flex;
+  margin: 35px 0;
+  align-items: center;
+}
+
+.footer-connect i {
+  display: inline-block;
+  margin: 0 15px;
+  cursor: pointer;
+}
+.google-icon {
+  display: inline-block;
+  background: linear-gradient(
+    to bottom,
+    #ea4335 25%,
+    #fbbc05 50%,
+    #4285f4 75%,
+    #34a853 90%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-size: 28px;
+  text-align: center;
+}
