@@ -1,0 +1,14 @@
+/* header */
+header a {
+  color: #000;
+}
+header a:hover {
+  color: #3333;
+}
+.logo-brand {
+  width: 88px;
+}
+.logo-main {
+  width: 100%;
+  clip-path: circle(50% at 50% 50%);
+}
