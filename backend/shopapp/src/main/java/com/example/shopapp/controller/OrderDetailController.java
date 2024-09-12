@@ -1,9 +1,11 @@
 package com.example.shopapp.controller;
 import com.example.shopapp.Model.OrderDetail;
+import com.example.shopapp.components.LocalizationUtil;
 import com.example.shopapp.dto.OrderDTO;
 import com.example.shopapp.dto.OrderDetailDTO;
 import com.example.shopapp.response.OrderDetailResponse;
 import com.example.shopapp.service.OrderDetailService;
+import com.example.shopapp.utils.MessageKeys;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,7 @@ import java.util.List;
 @RequestMapping("${api.prefix}/order_details")
 public class OrderDetailController {
     private final OrderDetailService orderDetailService;
+    private final LocalizationUtil localizationUtil;
     @PostMapping("")
     public ResponseEntity<?> createdOrderDetail(@Valid @ModelAttribute OrderDetailDTO orderDetailDTO, BindingResult result){
         try {
@@ -65,7 +68,7 @@ public class OrderDetailController {
     public ResponseEntity<?> deleteOrderDetail(@Valid @PathVariable Long id){
         try {
             orderDetailService.deleteOrderDetail(id);
-            return ResponseEntity.ok("delete order detail with id = "+ id);
+            return ResponseEntity.ok(localizationUtil.getLocalizedMessage(MessageKeys.DELETE_ORDER_DETAIL_SUCCESSFULLY));
         }catch (Exception e){
             return ResponseEntity.badRequest().body("not find order detail with id:"+id+" ,so not delete");
         }

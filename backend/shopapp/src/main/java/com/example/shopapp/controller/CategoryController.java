@@ -2,8 +2,9 @@ package com.example.shopapp.controller;
 
 import com.example.shopapp.Model.Category;
 import com.example.shopapp.dto.CategoryDTO;
-import com.example.shopapp.dto.ProductDTO;
+import com.example.shopapp.response.UpdateCategoryResponse;
 import com.example.shopapp.service.CategoryService;
+import com.example.shopapp.components.LocalizationUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
+    private final LocalizationUtil localizationUtil;
+
     @GetMapping("list")
     public ResponseEntity<List<Category>> getAllCategory(){
         List<Category> categories = categoryService.getAllCategories();
@@ -33,9 +36,12 @@ public class CategoryController {
         return ResponseEntity.ok("add success");
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateCategory(@PathVariable long id,@Valid @ModelAttribute CategoryDTO categoryDTO){
+    public ResponseEntity<UpdateCategoryResponse> updateCategory(@PathVariable long id, @Valid @ModelAttribute CategoryDTO categoryDTO){
         categoryService.updateCategory(id,categoryDTO);
-        return ResponseEntity.ok("update category success");
+        String message= localizationUtil.getLocalizedMessage("category.update_category.update_successfully");
+        return ResponseEntity.ok(UpdateCategoryResponse.builder()
+                .message(message)
+                .build());
     }
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteCategory(@RequestParam long id){
