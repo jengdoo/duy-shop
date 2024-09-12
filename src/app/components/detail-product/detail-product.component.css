@@ -1,0 +1,117 @@
+.product-detail {
+  background: rgba(255, 255, 255, 0.3);
+  padding: 20px;
+}
+.col-5 {
+  flex: 0 0 20%;
+  max-width: 20%;
+  margin-top: 15px;
+}
+.thumbnail-item .thumbnail-image {
+  width: 100%;
+}
+
+.product-detail-header {
+  font-size: 24px;
+  font-weight: 500;
+  color: #000;
+}
+.product-detail-content {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 28px;
+}
+.product-quantity {
+  margin-bottom: 10px;
+}
+.quantity {
+  display: inline-block;
+}
+.quantity button {
+  border: none;
+  background: #817e7e;
+  align-items: center;
+  text-align: center;
+}
+.quantity button:hover {
+  background: #ddd;
+}
+.quantity input {
+  border: none;
+  width: 28px;
+  text-align: center;
+  outline: none;
+}
+.product-action {
+  display: flex;
+  gap: 55px;
+}
+.action-cart button {
+  background-color: #000;
+  color: #fff;
+  padding: 10px 25px;
+  border-radius: 20px 0;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  width: 220px;
+}
+.action-cart button:hover {
+  background: #fff;
+  color: #000;
+  border: 2px solid #000;
+}
+.action-buy button {
+  background-color: rgb(118, 11, 11);
+  color: #fff;
+  padding: 10px 25px;
+  border-radius: 20px 0;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  width: 150px;
+}
+.action-buy button:hover {
+  background-color: rgb(157, 31, 31);
+  color: #fff;
+}
+@media (max-width: 1024px) {
+  .product-detail-header {
+    margin-top: 28px;
+    font-size: 22px;
+    font-weight: 500;
+    color: #000;
+  }
+  .product-detail-content {
+    font-size: 14px;
+    font-weight: 400;
+  }
+  .product-action {
+    display: flex;
+    justify-content: space-between;
+  }
+  .action-cart button {
+    background-color: #000;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    width: 200px;
+  }
+  .action-cart button:hover {
+    background-color: #332e2e;
+    color: #fff;
+    border: none;
+  }
+  .action-buy button {
+    background-color: rgb(118, 11, 11);
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+  }
+}
