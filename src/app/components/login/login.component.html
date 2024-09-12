@@ -1,0 +1,190 @@
+<body>
+  <div #wrapper class="wrapper">
+    <span class="bg-animate"></span>
+    <span class="bg-animate2"></span>
+    <div class="form-box login">
+      <h2 class="animation" style="--i: 0; --j: 21">Đăng nhập</h2>
+      <form action="" #loginForm="ngForm">
+        <div class="input-box animation" style="--i: 1; --j: 22">
+          <input
+            type="text"
+            required
+            [(ngModel)]="phoneNumberLogin"
+            (focus)="loginForm.form.markAsTouched()"
+            name="phoneNumberLogin"
+          />
+          <label for="">Số điện thoại</label>
+          <i class="fa-solid fa-phone"></i>
+          <p
+            class="text-danger"
+            *ngIf="phoneNumberLogin.length < 6 && loginForm.form.touched"
+          >
+            Số điện thoại ít nhất 6 ký tự
+          </p>
+        </div>
+        <div class="input-box animation" style="--i: 2; --j: 23">
+          <input
+            type="password"
+            [(ngModel)]="passwordLogin"
+            (ngModelChange)="loginForm.form.markAsTouched()"
+            name="passwordLogin"
+            required
+          />
+          <label for="">Mật khẩu</label>
+          <i class="fa-solid fa-lock"></i>
+          <p
+            class="text-danger"
+            *ngIf="passwordLogin.length < 3 && loginForm.form.touched"
+          >
+            Password ít nhất 3 ký tự
+          </p>
+        </div>
+        <div class="input-box animation" style="--i: 2; --j: 23">
+          <select name="" id="" [(ngModel)]="selectedRole">
+            <option selected disabled>Quyen dang nhap</option>
+            <option *ngFor="let role of roles" [ngValue]="role">
+              {{ role.name }}
+            </option>
+          </select>
+        </div>
+        <button
+          type="submit"
+          (click)="login()"
+          class="btn animation"
+          style="--i: 3; --j: 24"
+        >
+          Đăng nhập
+        </button>
+        <div class="logreg-link animation" style="--i: 4; --j: 25">
+          <p>
+            Bạn chưa có tài khoản?
+            <a href="#" #registerLink class="register-link">Đăng ký</a>
+          </p>
+        </div>
+      </form>
+    </div>
+    <div class="info-text login">
+      <h2 class="animation" style="--i: 0; --j: 20">Welcome back!</h2>
+      <p class="animation" style="--i: 1; --j: 21">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+      </p>
+    </div>
+    <form #registerForm="ngForm">
+      <div class="form-box register">
+        <h2 class="animation" style="--i: 17; --j: 0">Đăng ký</h2>
+        <form action="">
+          <div class="input-box animation" style="--i: 17; --j: 1">
+            <input
+              type="text"
+              [(ngModel)]="fullName"
+              name="name"
+              (focus)="registerForm.form.markAsTouched()"
+              required
+            />
+            <label for="">Họ và tên</label>
+            <i class="fa-solid fa-file-signature"></i>
+            <p
+              class="text-danger"
+              *ngIf="fullName.length < 3 && registerForm.form.touched"
+            >
+              Họ tên ít nhất 3 ký tự
+            </p>
+          </div>
+          <div class="input-box animation" style="--i: 18; --j: 2">
+            <input
+              type="text"
+              [(ngModel)]="phoneNumber"
+              (focus)="registerForm.form.markAsTouched()"
+              name="phoneNumber"
+              required
+            />
+            <label for="">Số điện thoại</label>
+            <i class="fa-solid fa-phone"></i>
+            <p
+              class="text-danger"
+              *ngIf="phoneNumber.length < 6 && registerForm.form.touched"
+            >
+              Số điện thoại ít nhất 6 ký tự
+            </p>
+          </div>
+          <div class="input-box animation" style="--i: 20; --j: 3">
+            <input
+              type="password"
+              [(ngModel)]="password"
+              (ngModelChange)="
+                registerForm.form.markAsTouched(); checkPasswordMatch()
+              "
+              name="password"
+              required
+            />
+            <label for="">Mật khẩu</label>
+            <i class="fa-solid fa-lock"></i>
+            <p
+              class="text-danger"
+              *ngIf="password.length < 3 && registerForm.form.touched"
+            >
+              Password ít nhất 3 ký tự
+            </p>
+          </div>
+          <div class="input-box animation" style="--i: 21; --j: 4">
+            <input
+              type="password"
+              [(ngModel)]="confirmPassword"
+              name="confirmPassword"
+              (ngModelChange)="
+                registerForm.form.markAsTouched(); checkPasswordMatch()
+              "
+              required
+            />
+            <label for="">Xác nhận mật khẩu</label>
+            <i class="fa-solid fa-lock"></i>
+            <p
+              class="text-danger"
+              *ngIf="confirmPassword.length < 3 && registerForm.form.touched"
+            >
+              Confirm password ít nhất 3 ký tự
+            </p>
+            <p
+              class="text-danger"
+              *ngIf="registerForm.controls['confirmPassword']?.errors?.['passwordMismatch'] && registerForm.form.touched"
+            >
+              Mật khẩu không khớp, vui lòng kiểm tra lại!
+            </p>
+          </div>
+          <button
+            type="submit"
+            (click)="register()"
+            class="btn animation"
+            style="--i: 21; --j: 5"
+          >
+            Đăng ký
+          </button>
+          <div class="logreg-link animation" style="--i: 22; --j: 6">
+            <p>
+              Bạn đã có tài khoản?
+              <a href="#" #loginLink class="login-link">Đăng nhập</a>
+            </p>
+          </div>
+        </form>
+      </div>
+    </form>
+    <div class="info-text register">
+      <h2 class="animation" style="--i: 17; --j: 0">Welcome back!</h2>
+      <p class="animation" style="--i: 18; --j: 1">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+      </p>
+    </div>
+  </div>
+  <!-- <script>
+    const wrapper = document.querySelector(".wrapper");
+    const registerLink = document.querySelector(".registerLink");
+    const loginLink = document.querySelector(".loginLink");
+
+    registerLink.onclick = () => {
+      wrapper.classList.add("active");
+    };
+    loginLink.onclick = () => {
+      wrapper.classList.remove("active");
+    };
+  </script> -->
+</body>
