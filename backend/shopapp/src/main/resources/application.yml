@@ -20,6 +20,10 @@ spring:
       dialect: org.hibernate.dialect.MYSQL8Dialect
   config:
     enable-config-properties-scanning: true
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+    default-locale: en
 server:
   port: 8088
 api:

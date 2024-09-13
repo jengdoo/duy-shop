@@ -36,6 +36,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         try {
             if(isByPassToken(request)){ // request not token
                 filterChain.doFilter(request,response);
+                return;
                 //        filterChain.doFilter(request,response); // cho di qua het
             }
             final String authHeader = request.getHeader("Authorization");
@@ -43,7 +44,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"Unauthorized");
                 return;
             }
-            if(authHeader != null && authHeader.startsWith("Bearer ")){ // request token
                 final String token = authHeader.substring(7);
                 final String phoneNumber = jwtTokenUtil.extractPhoneNumber(token);
                 if(phoneNumber!=null && SecurityContextHolder.getContext().getAuthentication() == null){
@@ -56,7 +56,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
                 }
                 filterChain.doFilter(request,response);
-            }
         }catch (Exception e){
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"Unauthorized");
         }
@@ -64,6 +63,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private boolean isByPassToken(@NonNull HttpServletRequest request){
         final List<Pair<String,String>> byPassTokens = Arrays.asList(
                 Pair.of(String.format("%s/product",apiPrefix),"GET"),
+                Pair.of(String.format("%s/roles",apiPrefix),"GET"),
                 Pair.of(String.format("%s/category",apiPrefix),"GET"),
                 Pair.of(String.format("%s/users/register",apiPrefix),"POST"),
                 Pair.of(String.format("%s/users/login",apiPrefix),"POST")

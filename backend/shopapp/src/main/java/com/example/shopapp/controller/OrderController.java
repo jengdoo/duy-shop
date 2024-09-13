@@ -1,8 +1,10 @@
 package com.example.shopapp.controller;
 import com.example.shopapp.Model.Order;
+import com.example.shopapp.components.LocalizationUtil;
 import com.example.shopapp.dto.OrderDTO;
 import com.example.shopapp.response.OrderResponse;
 import com.example.shopapp.service.OrderService;
+import com.example.shopapp.utils.MessageKeys;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,7 @@ import java.util.List;
 @RequestMapping("${api.prefix}/orders")
 public class OrderController {
     private final OrderService orderService;
+    private final LocalizationUtil localizationUtil;
     @PostMapping("")
     public ResponseEntity<?> createdOrder(@Valid @ModelAttribute OrderDTO orderDTO, BindingResult result){
         try {
@@ -60,6 +63,6 @@ public class OrderController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteOrders(@Valid @PathVariable Long id){
         orderService.deleteOrder(id);
-        return ResponseEntity.ok("delete orders thành công");
+        return ResponseEntity.ok(localizationUtil.getLocalizedMessage(MessageKeys.DELETE_ORDER_SUCCESSFULLY));
     }
 }
