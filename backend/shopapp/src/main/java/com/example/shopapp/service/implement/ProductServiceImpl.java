@@ -12,6 +12,7 @@ import com.example.shopapp.repositories.ProductImageRepo;
 import com.example.shopapp.repositories.ProductRepo;
 import com.example.shopapp.response.ProductResponse;
 import com.example.shopapp.service.ProductService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +27,7 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepo categoryRepo;
     private final ProductImageRepo productImageRepo;
     @Override
+    @Transactional
     public Product createProduct(ProductDTO productDTO) throws DataNotFoundException {
        Category categoryExisted = categoryRepo.findById(productDTO.getCategoryId()).orElseThrow(()->new DataNotFoundException("Cannot find category with id"+productDTO.getCategoryId()));
         Product product =Product.builder()
@@ -50,6 +52,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public Product updateProduct(Long id,ProductDTO productDTO) {
         Optional<Product> existedProduct = productRepo.findById(id);
         if(existedProduct.isPresent()){
@@ -66,6 +69,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void deleteProduct(Long id) {
         Optional<Product> deleteProductById = productRepo.findById(id);
        deleteProductById.ifPresent(productRepo::delete);
@@ -76,6 +80,7 @@ public class ProductServiceImpl implements ProductService {
         return productRepo.existsByName(name);
     }
     @Override
+    @Transactional
     public ProductImage createProductImage(Long productId, ProductImageDTO productImageDTO) throws Exception{
         Product existedProduct = productRepo.findById(productId).orElseThrow(()->new RuntimeException("Cannot find product with id:"+productId));
         ProductImage newProductImage = ProductImage.builder()

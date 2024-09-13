@@ -43,7 +43,7 @@ public class ProductController {
     private final ProductService productService;
     @GetMapping("/list")
     public ResponseEntity<ProductListResponse> getProduct(@RequestParam int page, @RequestParam int pageSize){
-        PageRequest pageRequest = PageRequest.of(page,pageSize, Sort.by("createdAt").descending());
+        PageRequest pageRequest = PageRequest.of(page,pageSize, Sort.by("id").ascending());
         Page<ProductResponse> productPage = productService.getAllProducts(pageRequest);
         int totalPage =productPage.getTotalPages();
         int pageCurrent = productPage.getNumber();
