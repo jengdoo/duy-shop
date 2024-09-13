@@ -10,12 +10,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface ProductService {
     Product createProduct(ProductDTO productDTO) throws DataNotFoundException;
     Product getProductById(Long id) throws DataNotFoundException;
-    Page<ProductResponse> getAllProducts(PageRequest pageRequest);
+    Page<ProductResponse> getAllProducts(Long categoryId,String name,Pageable pageable);
     Product updateProduct(Long id,ProductDTO productDTO);
     void deleteProduct(Long id);
     boolean existsByName(String name);
      ProductImage createProductImage(Long productId, ProductImageDTO productImageDTO) throws Exception;
+     List<ProductResponse> findByName(String name);
 }

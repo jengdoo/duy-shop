@@ -15,8 +15,11 @@ import com.example.shopapp.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,6 +29,7 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepo categoryRepo;
     private final ProductImageRepo productImageRepo;
     @Override
+    @Transactional
     public Product createProduct(ProductDTO productDTO) throws DataNotFoundException {
        Category categoryExisted = categoryRepo.findById(productDTO.getCategoryId()).orElseThrow(()->new DataNotFoundException("Cannot find category with id"+productDTO.getCategoryId()));
         Product product =Product.builder()
@@ -44,12 +48,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductResponse> getAllProducts(PageRequest pageRequest) {
-        return productRepo.findAll(pageRequest)
-                .map(ProductResponse::convertResponse);
+    public Page<ProductResponse> getAllProducts(Long categoryId, String name, Pageable pageable) {
+        if (name != null && !name.isEmpty()) {
+            name = "%" + name.trim() + "%";
+        }
+        Page<Product> productPage = productRepo.searchProducts(categoryId, name ,pageable);
+        return productPage.map(ProductResponse::convertResponse);
     }
 
+
     @Override
+    @Transactional
     public Product updateProduct(Long id,ProductDTO productDTO) {
         Optional<Product> existedProduct = productRepo.findById(id);
         if(existedProduct.isPresent()){
@@ -66,6 +75,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void deleteProduct(Long id) {
         Optional<Product> deleteProductById = productRepo.findById(id);
        deleteProductById.ifPresent(productRepo::delete);
@@ -76,6 +86,7 @@ public class ProductServiceImpl implements ProductService {
         return productRepo.existsByName(name);
     }
     @Override
+    @Transactional
     public ProductImage createProductImage(Long productId, ProductImageDTO productImageDTO) throws Exception{
         Product existedProduct = productRepo.findById(productId).orElseThrow(()->new RuntimeException("Cannot find product with id:"+productId));
         ProductImage newProductImage = ProductImage.builder()
@@ -88,5 +99,10 @@ public class ProductServiceImpl implements ProductService {
             throw new InvalidParamException("Number of image must be less or equal 5");
         }
         return productImageRepo.save(newProductImage);
+    }
+
+    @Override
+    public List<ProductResponse> findByName(String name) {
+        return productRepo.findByNameContaining(name).stream().map(ProductResponse::convertResponse).toList();
     }
 }

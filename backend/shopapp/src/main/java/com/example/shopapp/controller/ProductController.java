@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -46,15 +47,26 @@ import java.util.UUID;
 public class ProductController {
     private final ProductService productService;
     private final LocalizationUtil localizationUtil;
-    @GetMapping("/list")
-    public ResponseEntity<ProductListResponse> getProduct(@RequestParam int page, @RequestParam int pageSize){
-        PageRequest pageRequest = PageRequest.of(page,pageSize, Sort.by("createdAt").descending());
-        Page<ProductResponse> productPage = productService.getAllProducts(pageRequest);
-        int totalPage =productPage.getTotalPages();
+
+    @GetMapping("")
+    public ResponseEntity<?> getProduct(@RequestParam(defaultValue = "") String name,
+                                                          @RequestParam(defaultValue = "", value = "category_id") Long categoryId,
+                                                          @RequestParam(defaultValue = "0") int page,
+                                                          @RequestParam(defaultValue = "10") int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by("id").ascending());
+        Page<ProductResponse> productPage = productService.getAllProducts(categoryId, name, pageable);
+
+        int totalPage = productPage.getTotalPages();
         int pageCurrent = productPage.getNumber();
         int pageSizeCurrent = productPage.getSize();
         List<ProductResponse> products = productPage.getContent();
-        return ResponseEntity.ok(ProductListResponse.builder().productResponseList(products).page(pageCurrent).pageSize(pageSizeCurrent).totalPage(totalPage).build());
+
+        return ResponseEntity.ok(ProductListResponse.builder()
+                .productResponseList(products)
+                .page(pageCurrent)
+                .pageSize(pageSizeCurrent)
+                .totalPage(totalPage)
+                .build());
     }
     @PostMapping(value = "/add")
     public ResponseEntity<?> addCategory(@Valid @RequestBody ProductDTO productDTO,
@@ -110,7 +122,8 @@ public class ProductController {
             if(resource.exists()){
                 return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(resource);
             }else {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(new UrlResource(Paths.get("uploads/notfound.jfif").toUri()));
+//                return ResponseEntity.notFound().build();
             }
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
@@ -167,7 +180,7 @@ public class ProductController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @GetMapping("")
+    @GetMapping("{id}")
     public ResponseEntity<?> getProductById(@RequestParam long id){
         try {
             Product product = productService.getProductById(id);
@@ -199,5 +212,10 @@ public class ProductController {
             }
         }
         return ResponseEntity.ok("Fake date Products successful");
+    }
+    @GetMapping("/{name}")
+    public ResponseEntity<?> findByName(@RequestParam(value = "name",defaultValue = "duy") String name){
+        List<ProductResponse> productResponseList = productService.findByName(name);
+        return ResponseEntity.ok(productResponseList);
     }
 }
