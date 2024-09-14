@@ -180,12 +180,21 @@ public class ProductController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @GetMapping("{id}")
-    public ResponseEntity<?> getProductById(@RequestParam long id){
+    @GetMapping("/productId/{id}")
+    public ResponseEntity<?> getProductById(@PathVariable long id){
         try {
             Product product = productService.getProductById(id);
             return  ResponseEntity.ok(ProductResponse.convertResponse(product));
         } catch (DataNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @GetMapping("/categoryId/{id}")
+    public ResponseEntity<?> getProductByCategoryId(@PathVariable long id){
+        try {
+            List<ProductResponse> products = productService.findByCategory(id);
+            return  ResponseEntity.ok(products);
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

@@ -105,4 +105,10 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductResponse> findByName(String name) {
         return productRepo.findByNameContaining(name).stream().map(ProductResponse::convertResponse).toList();
     }
+
+    @Override
+    public List<ProductResponse> findByCategory(Long categoryId) {
+        List<Product> products = productRepo.findByCategoryId(categoryId);
+        return products.stream().map(ProductResponse::convertResponse).toList();
+    }
 }

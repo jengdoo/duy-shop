@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,4 +29,6 @@ public class Product extends BaseModel {
     @ManyToOne
     @JoinColumn(name = "category_id",referencedColumnName = "id")
     private Category category;
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<ProductImage> productImages;
 }

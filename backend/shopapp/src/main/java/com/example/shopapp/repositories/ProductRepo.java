@@ -22,4 +22,5 @@ public interface ProductRepo extends JpaRepository<Product,Long> {
     @Query("SELECT p FROM Product p WHERE p.name LIKE %:name%")
     List<Product> findByNameContaining(@Param("name") String name);
 
+    List<Product> findByCategoryId(Long categoryId);
 }
