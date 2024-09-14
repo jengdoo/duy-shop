@@ -3,41 +3,14 @@
   <div class="product-detail">
     <div class="row">
       <div class="col-lg-6 col-xs-12">
-        <div
-          id="carouselExampleInterval"
-          class="carousel slide"
-          data-bs-ride="carousel"
-        >
+        <div id="carouselExampleInterval" class="carousel" data-bs-ride="true">
           <div class="carousel-inner">
-            <div class="carousel-item active" data-bs-interval="3000">
-              <img
-                src="https://www.androidheadlines.com/wp-content/uploads/2024/09/apple-iphone-16-2-scaled.jpeg"
-                class="d-block w-100"
-              />
-            </div>
-            <div class="carousel-item" data-bs-interval="2000">
-              <img
-                src="https://tse1.mm.bing.net/th?id=OIF.QzbNzXn7LfRstB66OdPV%2fw&pid=Api&P=0&h=220"
-                class="d-block w-100"
-              />
-            </div>
-            <div class="carousel-item" data-bs-interval="2000">
-              <img
-                src="https://cameratimes.b-cdn.net/wp-content/uploads/2024/09/Apple-iphone-16-event-1536x864.jpeg"
-                class="d-block w-100"
-              />
-            </div>
-            <div class="carousel-item" data-bs-interval="2000">
-              <img
-                src="https://cameratimes.b-cdn.net/wp-content/uploads/2024/09/Apple-iphone-16-event-1536x864.jpeg"
-                class="d-block w-100"
-              />
-            </div>
-            <div class="carousel-item" data-bs-interval="2000">
-              <img
-                src="https://cameratimes.b-cdn.net/wp-content/uploads/2024/09/Apple-iphone-16-event-1536x864.jpeg"
-                class="d-block w-100"
-              />
+            <div
+              class="carousel-item slide"
+              *ngFor="let image of product?.product_images; let i = index"
+              [ngClass]="{ active: i === currentImageIndex }"
+            >
+              <img [src]="image.image_url" class="d-block w-100 slide-image" />
             </div>
           </div>
           <button
@@ -45,8 +18,12 @@
             type="button"
             data-bs-target="#carouselExampleInterval"
             data-bs-slide="prev"
+            (click)="previousImage()"
           >
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <i
+              style="color: #595555; font-size: 32px"
+              class="fa-solid fa-chevron-left carousel-control"
+            ></i>
             <span class="visually-hidden">Previous</span>
           </button>
           <button
@@ -54,49 +31,38 @@
             type="button"
             data-bs-target="#carouselExampleInterval"
             data-bs-slide="next"
+            (click)="nextImage()"
           >
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <i
+              style="color: #595555; font-size: 32px"
+              class="fa-solid fa-chevron-right carousel-control"
+            ></i>
             <span class="visually-hidden">Next</span>
           </button>
         </div>
         <div class="row">
-          <div class="thumbnail-item col-5">
-            <img
-              src="https://www.androidheadlines.com/wp-content/uploads/2024/09/apple-iphone-16-2-scaled.jpeg"
-              class="thumbnail-image"
-            />
-          </div>
-          <div class="thumbnail-item col-5">
-            <img
-              src="https://www.androidheadlines.com/wp-content/uploads/2024/09/apple-iphone-16-2-scaled.jpeg"
-              class="thumbnail-image"
-            />
-          </div>
-          <div class="thumbnail-item col-5">
-            <img
-              src="https://www.androidheadlines.com/wp-content/uploads/2024/09/apple-iphone-16-2-scaled.jpeg"
-              class="thumbnail-image"
-            />
-          </div>
-          <div class="thumbnail-item col-5">
-            <img
-              src="https://www.androidheadlines.com/wp-content/uploads/2024/09/apple-iphone-16-2-scaled.jpeg"
-              class="thumbnail-image"
-            />
-          </div>
-          <div class="thumbnail-item col-5">
-            <img
-              src="https://www.androidheadlines.com/wp-content/uploads/2024/09/apple-iphone-16-2-scaled.jpeg"
-              class="thumbnail-image"
-            />
+          <div
+            class="col-5 thumbnail-item"
+            *ngFor="let image of product?.product_images; let i = index"
+            [ngClass]="{
+              active: i === currentImageIndex,
+              selected: i === selectedImageIndex
+            }"
+            (click)="thumbnailClick(i)"
+          >
+            <img [src]="image.image_url" class="thumbnail-image" />
+            <i
+              class="fa-solid fa-check tick"
+              *ngIf="i === selectedImageIndex"
+            ></i>
           </div>
         </div>
       </div>
       <div class="col-lg-6 col-xs-12">
         <h4 class="product-detail-header">Thông tin chi tiết sản phẩm</h4>
         <div class="product-detail-content">
-          <p>Tên sản phẩm: Product a</p>
-          <p>Giá: $400</p>
+          <p>Tên sản phẩm: {{ product?.name }}</p>
+          <p>Giá: ${{ product?.price }}</p>
           <div class="product-quantity">
             <p>Số lượng</p>
             <div class="quantity">
@@ -105,11 +71,8 @@
               <button>+</button>
             </div>
           </div>
-          <p>
-            Mô tả sản phẩm: Lorem, ipsum dolor sit amet consectetur adipisicing
-            elit. Sit a, corrupti dignissimos officiis rem eaque, repellendus
-            unde repellat fugiat est corporis hic explicabo? Animi ex natus
-            totam quisquam recusandae quidem?
+          <p class="product-description">
+            Mô tả sản phẩm: {{ product?.description }}
           </p>
           <div class="product-action">
             <div class="action-cart">
@@ -122,6 +85,46 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="space-border">
+      <h1 class="border-text">Sản phẩm</h1>
+    </div>
+    <div class="row product-container" *ngIf="productsToShow.length > 0">
+      <div class="prev">
+        <i class="fa-solid fa-arrow-left" (click)="onPrev()"></i>
+      </div>
+      <div *ngFor="let product of productsToShow" class="col-lg-3 col-md-6">
+        <div class="product-same">
+          <div class="product-same-image">
+            <img [src]="product.url" alt="" />
+          </div>
+          <h3 class="product-same-name">{{ product.name }}</h3>
+          <p class="product-same-warranty">Bảo hành: 12 tháng</p>
+          <p class="product-same-price">
+            <b>Price:</b> ${{ product.price }}
+            <sup><del style="color: red">$100</del></sup>
+          </p>
+          <p class="product-same-description">
+            {{ product.description }}
+          </p>
+          <div class="product-same-rating">
+            <i class="fa-solid fa-star fa-lg"></i>
+            <i class="fa-solid fa-star fa-lg"></i>
+            <i class="fa-solid fa-star fa-lg"></i>
+            <i class="fa-solid fa-star fa-lg"></i>
+            <i class="fa-solid fa-star-half-stroke fa-lg"></i>
+          </div>
+          <div class="product-same-action">
+            <button class="product-same-action-btn cart">
+              <i class="fa-solid fa-cart-shopping"></i>
+            </button>
+            <button class="product-same-action-btn buy">Buy now</button>
+          </div>
+        </div>
+      </div>
+      <div class="next">
+        <i class="fa-solid fa-arrow-right" (click)="onNext()"></i>
       </div>
     </div>
   </div>

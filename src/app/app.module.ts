@@ -45,6 +45,6 @@ const routes: Routes = [
       multi: true,
     },
   ],
-  bootstrap: [HomeComponent], // Thành phần khởi động chính của ứng dụng
+  bootstrap: [DetailProductComponent], // Thành phần khởi động chính của ứng dụng
 })
 export class AppModule {}
