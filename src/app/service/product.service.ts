@@ -23,4 +23,14 @@ export class ProductService {
       .set('pageSize', pageSize.toString());
     return this.http.get<Product[]>(this.apiGetProduct, { params });
   }
+  getDetailProduct(productId: number) {
+    return this.http.get(
+      `${environment.apiBaseUrl}/product/productId/${productId}`
+    );
+  }
+  getProductsByCategory(categoryId: number) {
+    return this.http.get(
+      `${environment.apiBaseUrl}/product/categoryId/${categoryId}`
+    );
+  }
 }
