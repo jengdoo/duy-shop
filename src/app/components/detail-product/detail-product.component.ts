@@ -5,6 +5,7 @@ import { FooterComponent } from '../footer/footer.component';
 import { Product } from '../../models/product';
 import { ProductService } from '../../service/product.service';
 import { environment } from '../../environments/environment';
+import { CartService } from '../../service/cart.service';
 
 @Component({
   selector: 'app-detail-product',
@@ -23,11 +24,15 @@ export class DetailProductComponent implements OnInit {
   startIndex = 0;
   categoryId?: number;
   showTickFlag: boolean = false;
-  constructor(private productService: ProductService) {
+  quantity: number = 1;
+  constructor(
+    private productService: ProductService,
+    private cartService: CartService
+  ) {
     this.loadProducts();
   }
   ngOnInit() {
-    const idParam = 6; // Ví dụ ID từ tham số hoặc từ URL
+    const idParam = 1; // Ví dụ ID từ tham số hoặc từ URL
     if (idParam !== null) {
       this.productId = +idParam;
     }
@@ -54,7 +59,25 @@ export class DetailProductComponent implements OnInit {
       console.error('productId không hợp lệ:', idParam);
     }
   }
-
+  addToCart() {
+    debugger;
+    if (this.product) {
+      this.cartService.addToCart(this.product.id, this.quantity);
+    } else {
+      console.error('khongt he mua');
+    }
+  }
+  increaseQuantity() {
+    this.quantity++;
+  }
+  decreaseQuantity() {
+    if (this.quantity > 1) {
+      this.quantity--;
+    }
+  }
+  buyNow() {
+    // mua hang
+  }
   loadRelatedProducts(categoryId?: number): void {
     if (categoryId !== undefined && categoryId !== null) {
       this.productService.getProductsByCategory(categoryId).subscribe({
