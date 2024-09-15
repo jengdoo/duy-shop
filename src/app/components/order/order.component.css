@@ -1,9 +1,5 @@
-.order {
-  margin-top: 55px;
-}
 .order-container {
-  background: rgba(255, 255, 255, 0.3);
-  padding: 20px;
+  padding: 100px 0;
 }
 .table {
   width: 100%;
@@ -39,4 +35,13 @@ td {
 }
 .coupon-input {
   border-radius: 15px 0 0 15px;
+}
+.success-snackbar {
+  background-color: #4caf50; /* Màu xanh lá cây cho thông báo thành công */
+  color: white;
+}
+
+.error-snackbar {
+  background-color: #f44336; /* Màu đỏ cho thông báo thất bại */
+  color: white;
 }

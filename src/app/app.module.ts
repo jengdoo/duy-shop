@@ -10,9 +10,10 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { OrderComponent } from './components/order/order.component';
-import { OrderConfirmComponent } from './components/order-confirm/order-confirm.component';
+import { OrderConfirmComponent } from './components/order-details/order-detail.component';
 import { TokenInterceptor } from './interceptors/token.interceptor';
-
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 // Định nghĩa các route
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -32,6 +33,7 @@ const routes: Routes = [
     // Các thành phần khác nếu cần
   ],
   imports: [
+    MatSnackBarModule,
     BrowserModule,
     FormsModule,
     HttpClientModule,
@@ -44,7 +46,8 @@ const routes: Routes = [
       useClass: TokenInterceptor,
       multi: true,
     },
+    provideAnimationsAsync(),
   ],
-  bootstrap: [DetailProductComponent], // Thành phần khởi động chính của ứng dụng
+  bootstrap: [OrderConfirmComponent], // Thành phần khởi động chính của ứng dụng
 })
 export class AppModule {}

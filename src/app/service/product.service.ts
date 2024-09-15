@@ -33,4 +33,13 @@ export class ProductService {
       `${environment.apiBaseUrl}/product/categoryId/${categoryId}`
     );
   }
+  getProductsByIds(productIds: number[]): Observable<Product[]> {
+    const params = new HttpParams().set('ids', productIds.join(','));
+    return this.http.get<Product[]>(
+      `${environment.apiBaseUrl}/product/by-ids`,
+      {
+        params,
+      }
+    );
+  }
 }
