@@ -58,7 +58,8 @@ public class WebSecurityConfig {
                                     .requestMatchers(HttpMethod.DELETE,String.format("%s/product/**",apiPrefix)).hasAnyRole(Role.ADMIN)
 
                                     .requestMatchers(HttpMethod.POST,String.format("%s/orders/**",apiPrefix)).hasAnyRole(Role.USER)
-                                    .requestMatchers(HttpMethod.GET,String.format("%s/orders/**",apiPrefix)).hasAnyRole(Role.USER,Role.ADMIN)
+//                                    .requestMatchers(HttpMethod.GET,String.format("%s/orders/**",apiPrefix)).hasAnyRole(Role.USER,Role.ADMIN)
+                                    .requestMatchers(HttpMethod.GET,String.format("%s/orders/**",apiPrefix)).permitAll()
                                     .requestMatchers(HttpMethod.DELETE,String.format("%s/orders/**",apiPrefix)).hasRole(Role.ADMIN)
                                     .requestMatchers(HttpMethod.PUT,String.format("%s/orders/**",apiPrefix)).hasRole(Role.ADMIN)
 
@@ -96,3 +97,5 @@ public class WebSecurityConfig {
 //                        httpSecurityCorsConfigurer.configurationSource(source);
 //                    }
 //                });
+//                                    .requestMatchers(HttpMethod.GET,String.format("%s/product/by-ids/**",apiPrefix)).hasAnyRole(Role.USER,Role.ADMIN)
+

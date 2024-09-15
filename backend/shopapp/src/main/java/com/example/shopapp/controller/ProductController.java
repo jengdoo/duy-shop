@@ -16,6 +16,7 @@ import com.github.javafaker.Faker;
 import jakarta.validation.Path;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,10 +37,8 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -198,7 +197,41 @@ public class ProductController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-   // @PostMapping("/generateFakeProducts")
+    @GetMapping("/by-ids")
+    public ResponseEntity<?> getProductsByIds(@RequestParam("ids") String ids) {
+        // Kiểm tra nếu tham số ids rỗng
+        if (ids == null || ids.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Tham số 'ids' không được rỗng.");
+        }
+
+        try {
+            // Chuyển đổi tham số ids thành danh sách các ID sản phẩm
+            List<Long> productIds = Arrays.stream(ids.split(","))
+                    .map(id -> {
+                        try {
+                            return Long.parseLong(id.trim());
+                        } catch (NumberFormatException e) {
+                            throw new IllegalArgumentException("ID không hợp lệ: " + id);
+                        }
+                    })
+                    .collect(Collectors.toList());
+
+            // Tìm các sản phẩm dựa trên danh sách ID
+            List<Product> products = productService.findProductsByIds(productIds);
+
+            // Trả về danh sách sản phẩm
+            return ResponseEntity.ok(products.stream().map(ProductResponse::convertResponse));
+
+        } catch (IllegalArgumentException e) {
+            // Trả về lỗi nếu ID không hợp lệ
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            // Xử lý các lỗi khác
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi khi lấy sản phẩm: " + e.getMessage());
+        }
+    }
+
+    // @PostMapping("/generateFakeProducts")
     private ResponseEntity<String> generateFakeProducts(){
         Faker faker = new Faker();
 

@@ -26,6 +26,8 @@ public class Product extends BaseModel {
     private String thumbnail;
     @Column(name = "description")
     private String description;
+    @Column(name = "quantity")
+    private int quantity;
     @ManyToOne
     @JoinColumn(name = "category_id",referencedColumnName = "id")
     private Category category;

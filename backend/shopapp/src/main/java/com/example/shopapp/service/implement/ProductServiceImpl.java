@@ -111,4 +111,9 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products = productRepo.findByCategoryId(categoryId);
         return products.stream().map(ProductResponse::convertResponse).toList();
     }
+
+    @Override
+    public List<Product> findProductsByIds(List<Long> productIds) {
+        return productRepo.findByProductById(productIds);
+    }
 }

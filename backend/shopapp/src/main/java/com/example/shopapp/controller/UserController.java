@@ -43,7 +43,7 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody UserLoginDTO userLoginDTO){
         try {
-            String token  = userService.login(userLoginDTO.getPhoneNumber(),userLoginDTO.getPassword());
+            String token  = userService.login(userLoginDTO.getPhoneNumber(),userLoginDTO.getPassword(),userLoginDTO.getRoleId()==null?1: userLoginDTO.getRoleId());
             String message= localizationUtil.getLocalizedMessage(MessageKeys.LOGIN_SUCCESSFULLY);
             return ResponseEntity.ok(LoginResponse.builder()
                     .message(message)

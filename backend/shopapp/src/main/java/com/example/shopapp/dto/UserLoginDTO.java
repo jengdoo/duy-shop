@@ -17,4 +17,5 @@ public class UserLoginDTO {
     private String phoneNumber;
     @NotBlank(message = "Password can not blank")
     private String password;
+    private Long roleId;
 }

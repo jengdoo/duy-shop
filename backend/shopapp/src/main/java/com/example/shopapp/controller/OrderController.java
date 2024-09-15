@@ -22,7 +22,7 @@ public class OrderController {
     private final OrderService orderService;
     private final LocalizationUtil localizationUtil;
     @PostMapping("")
-    public ResponseEntity<?> createdOrder(@Valid @ModelAttribute OrderDTO orderDTO, BindingResult result){
+    public ResponseEntity<?> createdOrder(@Valid @RequestBody OrderDTO orderDTO, BindingResult result){
         try {
             if(result.hasErrors()){
                 List<String> messageError = result.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList();
