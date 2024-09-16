@@ -58,15 +58,17 @@
         <div class="logreg-link animation" style="--i: 4; --j: 25">
           <p>
             Bạn chưa có tài khoản?
-            <a href="#" #registerLink class="register-link">Đăng ký</a>
+            <a #registerLink class="register-link" style="cursor: pointer"
+              >Đăng ký</a
+            >
           </p>
         </div>
       </form>
     </div>
     <div class="info-text login">
-      <h2 class="animation" style="--i: 0; --j: 20">Welcome back!</h2>
+      <h2 class="animation" style="--i: 0; --j: 20">Xin Chào!</h2>
       <p class="animation" style="--i: 1; --j: 21">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        Chào mừng bạn đã ghép thăm cửa hàng chúng tôi! Đây là trang đăng nhập.
       </p>
     </div>
     <form #registerForm="ngForm">
@@ -162,29 +164,19 @@
           <div class="logreg-link animation" style="--i: 22; --j: 6">
             <p>
               Bạn đã có tài khoản?
-              <a href="#" #loginLink class="login-link">Đăng nhập</a>
+              <a #loginLink class="login-link" style="cursor: pointer"
+                >Đăng nhập</a
+              >
             </p>
           </div>
         </form>
       </div>
     </form>
     <div class="info-text register">
-      <h2 class="animation" style="--i: 17; --j: 0">Welcome back!</h2>
+      <h2 class="animation" style="--i: 17; --j: 0">Xin Chào!</h2>
       <p class="animation" style="--i: 18; --j: 1">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        Chúc bạn có một ngày thật vui vẻ, cảm ơn bạn đã đăng ký tài khoản!
       </p>
     </div>
   </div>
-  <!-- <script>
-    const wrapper = document.querySelector(".wrapper");
-    const registerLink = document.querySelector(".registerLink");
-    const loginLink = document.querySelector(".loginLink");
-
-    registerLink.onclick = () => {
-      wrapper.classList.add("active");
-    };
-    loginLink.onclick = () => {
-      wrapper.classList.remove("active");
-    };
-  </script> -->
 </body>

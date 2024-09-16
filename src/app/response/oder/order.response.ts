@@ -15,5 +15,6 @@ export interface OrderResponse {
   shipping_method: string;
   shipping_address: string;
   shipping_date: Date;
-  order_details: OrderDetail[]; // Define the type of items in the array
+  active: boolean;
+  cart_items: OrderDetail[]; // Define the type of items in the array
 }

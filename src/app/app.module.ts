@@ -14,12 +14,19 @@ import { OrderConfirmComponent } from './components/order-details/order-detail.c
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { AppComponent } from './app/app.component';
+import { AppRouterModule } from './app.routes';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { BillComponent } from './components/bill/bill.component';
 // Định nghĩa các route
-const routes: Routes = [
-  { path: '', component: LoginComponent },
-  { path: 'home', component: HomeComponent },
-  { path: 'detail-product', component: DetailProductComponent },
-];
+// const routes: Routes = [
+//   { path: '', component: LoginComponent },
+//   { path: 'home', component: HomeComponent },
+//   { path: 'detail-product', component: DetailProductComponent },
+// ];
 
 @NgModule({
   declarations: [
@@ -30,6 +37,9 @@ const routes: Routes = [
     DetailProductComponent,
     OrderComponent,
     OrderConfirmComponent,
+    AppComponent,
+    ConfirmDialogComponent,
+    BillComponent,
     // Các thành phần khác nếu cần
   ],
   imports: [
@@ -38,7 +48,10 @@ const routes: Routes = [
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule, // Nếu cần
-    // RouterModule.forRoot(routes), // Cấu hình routing
+    AppRouterModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatIconModule,
   ],
   providers: [
     {
@@ -48,6 +61,6 @@ const routes: Routes = [
     },
     provideAnimationsAsync(),
   ],
-  bootstrap: [OrderConfirmComponent], // Thành phần khởi động chính của ứng dụng
+  bootstrap: [AppComponent], // Thành phần khởi động chính của ứng dụng
 })
 export class AppModule {}

@@ -12,10 +12,12 @@
                 <th>Số lượng</th>
                 <th>Đơn giá</th>
                 <th>Tổng tiền</th>
+                <th>Hành động</th>
+                <!-- Thêm cột hành động -->
               </tr>
             </thead>
             <tbody>
-              <ng-container *ngFor="let item of cartItems">
+              <ng-container *ngFor="let item of cartItems; let i = index">
                 <tr>
                   <td>
                     <div class="product-info">
@@ -27,7 +29,28 @@
                       </div>
                     </div>
                   </td>
-                  <td>{{ item.quantity }}</td>
+                  <td>
+                    <div class="quantity-controls">
+                      <button
+                        (click)="decreaseQuantity(i)"
+                        class="btn btn-outline-secondary"
+                      >
+                        -
+                      </button>
+                      <input
+                        type="text"
+                        [value]="item.quantity"
+                        readonly
+                        class="form-control quantity-input"
+                      />
+                      <button
+                        (click)="increaseQuantity(i)"
+                        class="btn btn-outline-secondary"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </td>
                   <td>
                     {{
                       item.product.price | currency : "VND" : "symbol" : "1.0-0"
@@ -38,6 +61,15 @@
                       item.product.price * item.quantity
                         | currency : "VND" : "symbol" : "1.0-0"
                     }}
+                  </td>
+                  <td>
+                    <button
+                      *ngIf="item.quantity > 0"
+                      (click)="confirmRemoveItem(i)"
+                      class="btn btn-outline-danger ms-2"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
                   </td>
                 </tr>
               </ng-container>
@@ -55,8 +87,11 @@
                 type="text"
                 class="form-control coupon-input"
                 placeholder="Nhập coupon"
+                [(ngModel)]="couponCode"
               />
-              <button class="btn btn-gradient">Áp dụng</button>
+              <button class="btn btn-gradient" (click)="applyCoupon()">
+                Áp dụng
+              </button>
             </div>
           </div>
         </div>

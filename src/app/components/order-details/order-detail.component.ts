@@ -36,7 +36,8 @@ export class OrderConfirmComponent implements OnInit {
     shipping_method: '', // Đổi từ shipping_method thành shippingMethod
     shipping_address: '', // Đổi từ shipping_address thành shippingAddress
     shipping_date: new Date(),
-    order_details: [], // Sử dụng OrderDetail[] thay vì []
+    active: true,
+    cart_items: [], // Sử dụng OrderDetail[] thay vì []
   };
 
   constructor(
@@ -68,8 +69,9 @@ export class OrderConfirmComponent implements OnInit {
           payment_method: response.payment_method,
           shipping_method: response.shipping_method,
           shipping_address: response.shipping_address,
+          active: response.active,
           shipping_date: new Date(response.shipping_date),
-          order_details: response.order_details.map((order_detail: any) => {
+          cart_items: response.order_details.map((order_detail: any) => {
             return {
               ...order_detail,
               productId: {
