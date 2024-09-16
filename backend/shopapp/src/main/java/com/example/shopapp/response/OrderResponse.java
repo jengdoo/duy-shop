@@ -45,7 +45,9 @@ public class OrderResponse{
     private String trackingNumber;
     @JsonProperty("payment_method")
     private String paymentMethod;
-    @JsonProperty("order_details")
+    @JsonProperty("active")
+    private boolean active;
+    @JsonProperty("cart_items")
     private List<OrderDetailResponse> orderDetailResponses;
 
     public static OrderResponse convertRespo(Order order){
@@ -58,6 +60,7 @@ public class OrderResponse{
                 .address(order.getAddress())
                 .status(order.getStatus())
                 .note(order.getNote())
+                .active(order.getActive())
                 .orderDate(order.getOrderDate())
                 .totalMoney(order.getTotalMoney())
                 .shippingMethod(order.getShippingMethod())

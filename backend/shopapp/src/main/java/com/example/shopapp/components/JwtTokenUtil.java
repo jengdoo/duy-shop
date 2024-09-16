@@ -33,6 +33,7 @@ public class JwtTokenUtil {
         Map<String,Object> claims = new HashMap<>();
 //        this.generateSecretKey();
         claims.put("phoneNumber",user.getPhoneNumber());
+        claims.put("userId",user.getId());
         try {
             String token = Jwts.builder()
                     .setClaims(claims)
@@ -67,19 +68,19 @@ public class JwtTokenUtil {
                 .getBody();
     }
     public <T> T extractClaim(String token, Function<Claims,T> claimsTFunction){
-      final Claims claims =   this.extractAllclaims(token);
+      final Claims claims = this.extractAllclaims(token);
       return claimsTFunction.apply(claims);
     }
 
     // check expiration
-    private boolean isTokenExpired(String token){
+    public boolean isTokenExpired(String token){
         Date expirationDate = this.extractClaim(token,Claims::getExpiration);
         return expirationDate.before(new Date());
     }
     public String extractPhoneNumber(String token){
-
         return extractClaim(token,Claims::getSubject);
-    } public boolean validateToken(String token, UserDetails userDetails){
+    }
+    public boolean validateToken(String token, UserDetails userDetails){
         String phoneNumber = extractPhoneNumber(token);
         return phoneNumber.equals(userDetails.getUsername())&&!isTokenExpired(token);
     }

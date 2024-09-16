@@ -1,8 +1,10 @@
 package com.example.shopapp.controller;
 
+import com.example.shopapp.Model.Role;
 import com.example.shopapp.Model.User;
 import com.example.shopapp.response.LoginResponse;
 import com.example.shopapp.response.RegisterResponse;
+import com.example.shopapp.response.UserResponse;
 import com.example.shopapp.service.UserService;
 import com.example.shopapp.components.LocalizationUtil;
 import com.example.shopapp.utils.MessageKeys;
@@ -10,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -53,5 +56,29 @@ public class UserController {
            return ResponseEntity.badRequest().body(LoginResponse.builder().message(localizationUtil.getLocalizedMessage(MessageKeys.LOGIN_FAILED,e.getMessage())).build());
         }
     }
+    @PostMapping("/details")
+    public ResponseEntity<?> getUserDetail(@RequestHeader("Authorization") String token){
+        try {
+            String extractedToken = token.substring(7);
+            User user = userService.getUserDetailsFromToken(extractedToken);
+            if (user != null && (userService.hasRole(user, "USER") || userService.hasRole(user, "ADMIN"))) {
+                return ResponseEntity.ok(UserResponse.convertUserResponse(user));
+            } else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(localizationUtil.getLocalizedMessage(MessageKeys.ACCOUNT_HAVE_NOT_ACCESS));
+            }
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getUserById(@PathVariable long userId){
+        try {
+            User user = userService.userFindById(userId);
+            return ResponseEntity.ok(UserResponse.convertUserResponse(user));
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }
 

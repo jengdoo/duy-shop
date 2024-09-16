@@ -58,7 +58,6 @@ public class WebSecurityConfig {
                                     .requestMatchers(HttpMethod.DELETE,String.format("%s/product/**",apiPrefix)).hasAnyRole(Role.ADMIN)
 
                                     .requestMatchers(HttpMethod.POST,String.format("%s/orders/**",apiPrefix)).hasAnyRole(Role.USER)
-//                                    .requestMatchers(HttpMethod.GET,String.format("%s/orders/**",apiPrefix)).hasAnyRole(Role.USER,Role.ADMIN)
                                     .requestMatchers(HttpMethod.GET,String.format("%s/orders/**",apiPrefix)).permitAll()
                                     .requestMatchers(HttpMethod.DELETE,String.format("%s/orders/**",apiPrefix)).hasRole(Role.ADMIN)
                                     .requestMatchers(HttpMethod.PUT,String.format("%s/orders/**",apiPrefix)).hasRole(Role.ADMIN)
@@ -67,6 +66,9 @@ public class WebSecurityConfig {
                                     .requestMatchers(HttpMethod.GET,String.format("%s/order_details/**",apiPrefix)).hasAnyRole(Role.USER,Role.ADMIN)
                                     .requestMatchers(HttpMethod.DELETE,String.format("%s/order_details/**",apiPrefix)).hasRole(Role.ADMIN)
                                     .requestMatchers(HttpMethod.PUT,String.format("%s/order_details/**",apiPrefix)).hasRole(Role.ADMIN)
+
+                                    .requestMatchers(HttpMethod.POST,String.format("%s/users/details/**",apiPrefix)).hasAnyRole(Role.USER,Role.ADMIN)
+                                    .requestMatchers(HttpMethod.GET,String.format("%s/users/userId/**",apiPrefix)).hasAnyRole(Role.USER,Role.ADMIN)
                                     .anyRequest().authenticated();
                 })
                 .csrf(AbstractHttpConfigurer::disable)
@@ -99,3 +101,4 @@ public class WebSecurityConfig {
 //                });
 //                                    .requestMatchers(HttpMethod.GET,String.format("%s/product/by-ids/**",apiPrefix)).hasAnyRole(Role.USER,Role.ADMIN)
 
+//                                    .requestMatchers(HttpMethod.GET,String.format("%s/orders/**",apiPrefix)).hasAnyRole(Role.USER,Role.ADMIN)

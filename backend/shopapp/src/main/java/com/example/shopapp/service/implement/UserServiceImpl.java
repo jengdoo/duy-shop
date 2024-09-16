@@ -3,6 +3,7 @@ package com.example.shopapp.service.implement;
 import com.example.shopapp.Model.Role;
 import com.example.shopapp.Model.User;
 import com.example.shopapp.components.JwtTokenUtil;
+import com.example.shopapp.components.LocalizationUtil;
 import com.example.shopapp.config.SecurityConfig;
 import com.example.shopapp.dto.UserDTO;
 import com.example.shopapp.exception.DataNotFoundException;
@@ -10,6 +11,7 @@ import com.example.shopapp.exception.PermissionDenyException;
 import com.example.shopapp.repositories.RoleRepo;
 import com.example.shopapp.repositories.UserRepo;
 import com.example.shopapp.service.UserService;
+import com.example.shopapp.utils.MessageKeys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,6 +30,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
+    private final LocalizationUtil localizationUtil;
     @Override
     public User createUser(UserDTO userDTO) throws Exception {
         String phoneNumber = userDTO.getPhoneNumber();
@@ -70,9 +73,46 @@ public class UserServiceImpl implements UserService {
                 throw new BadCredentialsException("Wrong phone number or password");
             }
         }
+        Optional<Role> optionalRole = roleRepo.findById(roleId);
+        if(optionalRole.isEmpty()||!roleId.equals(existedUser.getRole().getId())){
+            throw new DataNotFoundException(localizationUtil.getLocalizedMessage(MessageKeys.ACCOUNT_HAVE_NOT_ACCESS));
+        }
+        if(userOptional.get().getActive()){
+           if(userOptional.get().getActive()==null){
+               throw new DataNotFoundException("user active is null");
+           }
+           else if(userOptional.get().getActive()==false){
+               throw new DataNotFoundException(localizationUtil.getLocalizedMessage(MessageKeys.ACCOUNT_IS_LOCKED));
+           }
+        }
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(phone,password, existedUser.getAuthorities());
        // authenticate with java spring security
         authenticationManager.authenticate(authenticationToken);
         return jwtTokenUtil.generateToken(existedUser); // do you want to return ve jwt token
+    }
+
+    @Override
+    public User getUserDetailsFromToken(String token) throws Exception {
+        if(jwtTokenUtil.isTokenExpired(token)){
+            throw new Exception("Token is expired");
+        }
+        String phoneNumber = jwtTokenUtil.extractPhoneNumber(token);
+        Optional<User> user = userRepo.findByPhoneNumber(phoneNumber);
+        if(user.isPresent()){
+            return user.get();
+        }
+       else {
+           throw new Exception("User not found");
+        }
+    }
+    @Override
+    public boolean hasRole(User user, String roleName) {
+        Role userRole = user.getRole();
+        return userRole != null && userRole.getName().equals(roleName);
+    }
+
+    @Override
+    public User userFindById(Long userId) {
+        return userRepo.findById(userId).get();
     }
 }

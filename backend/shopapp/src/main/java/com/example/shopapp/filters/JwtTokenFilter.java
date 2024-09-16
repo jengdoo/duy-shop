@@ -57,20 +57,20 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request,response);
         }catch (Exception e){
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"Unauthorized");
+            e.printStackTrace();
         }
     }
-    private boolean isByPassToken(@NonNull HttpServletRequest request){
-        final List<Pair<String,String>> byPassTokens = Arrays.asList(
-                Pair.of(String.format("%s/product",apiPrefix),"GET"),
-//                Pair.of(String.format("%s/product/productId/{id}",apiPrefix),"GET"),
-                Pair.of(String.format("%s/orders",apiPrefix),"GET"),
-                Pair.of(String.format("%s/roles",apiPrefix),"GET"),
-                Pair.of(String.format("%s/category",apiPrefix),"GET"),
-                Pair.of(String.format("%s/users/register",apiPrefix),"POST"),
-                Pair.of(String.format("%s/users/login",apiPrefix),"POST")
+    private boolean isByPassToken(@NonNull HttpServletRequest request) {
+        final List<Pair<String, String>> byPassTokens = Arrays.asList(
+                Pair.of(String.format("%s/product", apiPrefix), "GET"),
+                Pair.of(String.format("%s/orders", apiPrefix), "GET"),
+                Pair.of(String.format("%s/roles", apiPrefix), "GET"),
+                Pair.of(String.format("%s/category", apiPrefix), "GET"),
+                Pair.of(String.format("%s/users/register", apiPrefix), "POST"),
+                Pair.of(String.format("%s/users/login", apiPrefix), "POST")
         );
         for (Pair<String, String> passToken : byPassTokens) {
-            if (request.getServletPath().contains(passToken.getFirst()) && request.getMethod().equals(passToken.getSecond()) ){
+            if (request.getServletPath().contains(passToken.getFirst()) && request.getMethod().equals(passToken.getSecond())) {
                 return true;
             }
         }
