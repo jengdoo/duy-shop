@@ -18,12 +18,12 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#"
+            <a class="nav-link active" aria-current="page" routerLink="/"
               >Trang chủ</a
             >
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Sản phẩm</a>
+            <a class="nav-link" routerLink="/product">Sản phẩm</a>
           </li>
           <li class="nav-item dropdown">
             <a
@@ -52,22 +52,86 @@
           <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
         <ul class="nav justify-content-end">
-          <li class="nav-item">
-            <a class="nav-link" href="#">
+          <li class="nav-item position-relative">
+            <a class="nav-link" routerLink="/orders">
               <i class="fa-solid fa-cart-shopping fa-lg"></i> Giỏ hàng
+              <span
+                class="badge bg-primary position-absolute top-0 end-0 translate-middle badge-count"
+              >
+                {{ cartProductCount }}
+              </span>
             </a>
+            <div class="cart-info-dropdown position-absolute">
+              <div *ngIf="cartItems.length === 0">Giỏ hàng trống</div>
+              <div *ngIf="cartItems.length > 0">
+                <ul class="list-unstyled">
+                  <li *ngFor="let item of getVisibleCartItems()">
+                    <div class="d-flex align-items-center">
+                      <img
+                        [src]="item.product.thumbnail"
+                        alt="{{ item.product.name }}"
+                        class="cart-item-image"
+                      />
+                      <div class="ms-2">
+                        <div>
+                          <strong>{{ item.product.name }}</strong>
+                        </div>
+                        <div>Số lượng: {{ item.quantity }}</div>
+                        <div>
+                          {{
+                            item.product.price * item.quantity
+                              | currency : "VND" : "symbol" : "1.0-0"
+                          }}
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                <div *ngIf="cartItems.length > 5" class="text-center mt-2">
+                  <a routerLink="/orders" class="btn btn-link">Xem tất cả</a>
+                </div>
+              </div>
+            </div>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown"
-              ><i class="fa-solid fa-user fa-lg"></i> User</a
+          <li
+            class="nav-item dropdown"
+            *ngIf="userResponse; else loggedOut"
+            style="cursor: pointer"
+          >
+            <a
+              class="nav-link"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
             >
+              <i class="fa-solid fa-user fa-lg"></i>
+              {{ userResponse.fullname }}
+            </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Đăng nhập</a></li>
-              <li><a class="dropdown-item" href="#">Đăng ký</a></li>
-              <li><hr class="dropdown-divider" /></li>
-              <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+              <li>
+                <a class="dropdown-item" routerLink="/orders/id"
+                  >Tài khoản của tôi</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" routerLink="/bills">Đơn mua của tôi</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" (click)="logout()"
+                  >Đăng xuất</a
+                >
+              </li>
             </ul>
           </li>
+          <ng-template #loggedOut>
+            <!-- Nội dung khi người dùng chưa đăng nhập -->
+            <li class="nav-item">
+              <a class="nav-link" href="/login">Đăng nhập</a>
+            </li>
+            <!-- <li class="nav-item">
+              <a class="nav-link" href="/login">Đăng ký</a>
+            </li> -->
+          </ng-template>
         </ul>
       </div>
     </div>

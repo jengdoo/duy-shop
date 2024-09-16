@@ -7,6 +7,9 @@ import { ProductService } from '../../service/product.service';
 import { TokenService } from '../../service/token.service';
 import { Category } from '../../models/category';
 import { CategoryService } from '../../service/category.service';
+import { Route, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { CartService } from '../../service/cart.service';
 
 @Component({
   selector: 'app-home',
@@ -25,10 +28,15 @@ export class HomeComponent implements OnInit {
   selectedCategoryId: number = 0;
   keyword: string = '';
   categories: Category[] = [];
+  product?: Product;
+  quantity: number = 1;
   constructor(
     private productService: ProductService,
     private tokenService: TokenService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private cartService: CartService
   ) {}
   ngOnInit(): void {
     this.getProducts(
@@ -119,7 +127,7 @@ export class HomeComponent implements OnInit {
     page: number,
     limit: number
   ) {
-    this.tokenService.removeToken();
+    // this.tokenService.removeToken();
     this.productService
       .getProducts(keyword, selectedCategoryId, page, limit)
       .subscribe({
@@ -140,5 +148,42 @@ export class HomeComponent implements OnInit {
           alert(error);
         },
       });
+  }
+  onProductClick(productId: number) {
+    debugger;
+    this.router.navigate(['/product', productId]);
+  }
+  buyNow(): void {
+    if (this.product) {
+      if (this.product.quantity >= 1) {
+        this.cartService.addToCart(this.product.id, this.quantity);
+        // Chuyển hướng đến trang đơn hàng
+        this.router.navigate(['/orders']); // Thay đổi đường dẫn nếu cần
+      } else {
+        this.showSuccessMessage('Sản phẩm đã hết hàng hoặc số lượng không đủ!');
+      }
+    } else {
+      this.showSuccessMessage('Product không hợp lệ');
+    }
+  }
+  private showSuccessMessage(message: string) {
+    this.snackBar.open(message, 'Đóng', {
+      duration: 3000, // Thời gian hiển thị thông báo (3 giây)
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: ['success-snackbar'],
+    });
+  }
+  addToCart() {
+    if (this.product) {
+      if (this.product.quantity >= 1) {
+        this.cartService.addToCart(this.product.id, this.quantity);
+        this.showSuccessMessage('Sản phẩm đã được thêm vào giỏ hàng!');
+      } else {
+        this.showSuccessMessage('Sản phẩm đã hết hàng hoặc số lượng không đủ!');
+      }
+    } else {
+      this.showSuccessMessage('Sản phẩm không hợp lệ để thêm vào giỏ hàng.');
+    }
   }
 }
