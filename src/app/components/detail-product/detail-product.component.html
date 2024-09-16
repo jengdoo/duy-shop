@@ -2,6 +2,7 @@
 <div class="container">
   <div class="product-detail">
     <div class="row">
+      <!-- Carousel and Images -->
       <div class="col-lg-6 col-xs-12">
         <div id="carouselExampleInterval" class="carousel" data-bs-ride="true">
           <div class="carousel-inner">
@@ -40,6 +41,7 @@
             <span class="visually-hidden">Next</span>
           </button>
         </div>
+        <!-- Thumbnails -->
         <div class="row">
           <div
             class="col-5 thumbnail-item"
@@ -58,13 +60,18 @@
           </div>
         </div>
       </div>
+
+      <!-- Product Details -->
       <div class="col-lg-6 col-xs-12">
         <h4 class="product-detail-header">Thông tin chi tiết sản phẩm</h4>
         <div class="product-detail-content">
           <p>Tên sản phẩm: {{ product?.name }}</p>
           <p>Giá: ${{ product?.price }}</p>
           <div class="product-quantity">
-            <p>Số lượng</p>
+            <p>
+              Số lượng <sup>({{ product?.quantity }})</sup>
+            </p>
+
             <div class="quantity">
               <button (click)="decreaseQuantity()">-</button>
               <input type="text" [value]="quantity" min="1" />
@@ -87,6 +94,7 @@
         </div>
       </div>
     </div>
+    <!-- Related Products -->
     <div class="space-border">
       <h1 class="border-text">Sản phẩm</h1>
     </div>
@@ -96,7 +104,11 @@
       </div>
       <div *ngFor="let product of productsToShow" class="col-lg-3 col-md-6">
         <div class="product-same">
-          <div class="product-same-image">
+          <div
+            class="product-same-image"
+            (click)="onProductClick(product.id)"
+            style="cursor: pointer"
+          >
             <img [src]="product.url" alt="" />
           </div>
           <h3 class="product-same-name">{{ product.name }}</h3>
@@ -116,10 +128,12 @@
             <i class="fa-solid fa-star-half-stroke fa-lg"></i>
           </div>
           <div class="product-same-action">
-            <button class="product-same-action-btn cart">
+            <button class="product-same-action-btn cart" (click)="addToCart()">
               <i class="fa-solid fa-cart-shopping"></i>
             </button>
-            <button class="product-same-action-btn buy">Buy now</button>
+            <button class="product-same-action-btn buy" (click)="buyNow()">
+              Buy now
+            </button>
           </div>
         </div>
       </div>

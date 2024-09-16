@@ -8,7 +8,7 @@ export class OrderDTO {
   total_money: number;
   payment_method: string;
   shipping_method: string;
-  coupon_code: string;
+  // coupon_code: string;
   cart_items: { product_id: number; quantity: number }[];
 
   constructor(data: any) {
@@ -21,7 +21,6 @@ export class OrderDTO {
     this.total_money = data.total_money || 0;
     this.payment_method = data.payment_method || '';
     this.shipping_method = data.shipping_method || '';
-    this.coupon_code = data.coupon_code || '';
     this.cart_items = data.cart_items || [];
   }
 }

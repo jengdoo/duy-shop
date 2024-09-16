@@ -76,7 +76,7 @@
       *ngFor="let product of productResponseList"
     >
       <div class="product-item">
-        <div class="product-image">
+        <div class="product-image" (click)="onProductClick(product.id)">
           <img [src]="product.url" class="image-item" />
         </div>
         <h3 class="product-name">{{ product.name }}</h3>
@@ -94,10 +94,12 @@
           <i class="fa-solid fa-star-half-stroke"></i>
         </div>
         <div class="product-action">
-          <button class="product-action-btn cart">
+          <button class="product-action-btn cart" (click)="addToCart()">
             <i class="fa-solid fa-cart-shopping"></i>
           </button>
-          <button class="product-action-btn buy">Buy now</button>
+          <button class="product-action-btn buy" (click)="buyNow()">
+            Buy now
+          </button>
         </div>
       </div>
     </div>

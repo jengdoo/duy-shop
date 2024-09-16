@@ -55,7 +55,7 @@
             </tr>
           </thead>
           <tbody>
-            <ng-container *ngFor="let order of orderResponse.order_details">
+            <ng-container *ngFor="let order of orderResponse.cart_items">
               <tr>
                 <td>
                   <div class="product-info">
@@ -88,7 +88,9 @@
           }}
         </div>
         <div class="text-center mt-3">
-          <button class="btn btn-gradient">Tiếp tục mua hàng</button>
+          <button class="btn btn-gradient" routerLink="/">
+            Tiếp tục mua hàng
+          </button>
         </div>
       </div>
     </div>

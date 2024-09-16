@@ -297,3 +297,10 @@
     display: none;
   }
 }
+.success-snackbar {
+  background-color: #4caf50; /* Màu nền xanh lá cho thông báo thành công */
+  color: #fff; /* Màu chữ trắng */
+  font-size: 16px; /* Kích thước chữ */
+  border-radius: 4px; /* Bo góc nhẹ */
+  padding: 10px; /* Khoảng cách giữa chữ và viền */
+}
