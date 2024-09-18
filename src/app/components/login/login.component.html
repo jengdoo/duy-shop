@@ -39,14 +39,6 @@
             Password ít nhất 3 ký tự
           </p>
         </div>
-        <div class="input-box animation" style="--i: 2; --j: 23">
-          <select name="" id="" [(ngModel)]="selectedRole">
-            <option selected disabled>Quyen dang nhap</option>
-            <option *ngFor="let role of roles" [ngValue]="role">
-              {{ role.name }}
-            </option>
-          </select>
-        </div>
         <button
           type="submit"
           (click)="login()"

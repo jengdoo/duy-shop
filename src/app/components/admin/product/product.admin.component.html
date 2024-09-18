@@ -1,0 +1,62 @@
+<div class="order">
+  <h2 class="text-center">Danh sách các sản phẩm</h2>
+  <div class="order-content">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Tên sản phẩm</th>
+          <th>Giá</th>
+          <th>Số lượng</th>
+          <th>Mô tả</th>
+          <th>Danh mục</th>
+          <th>Hình ảnh</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let item of products">
+          <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>
+              <div class="description-product">{{ item.description }}</div>
+            </td>
+            <td>{{ item.categoryId }}</td>
+            <td>
+              <div class="product-admin-image">
+                <img [src]="item.url" class="image-product" />
+              </div>
+            </td>
+            <td>
+              <button class="btn btn-danger">Delete</button>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+  <div class="paging">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item" *ngIf="currentPage > 0">
+          <a class="page-link" (click)="onPageChange(currentPage - 1)">
+            &laquo;
+          </a>
+        </li>
+        <ng-container *ngFor="let page of visiblePages">
+          <li class="page-item" [ngClass]="{ active: page === currentPage }">
+            <a class="page-link" (click)="onPageChange(page)">{{ page + 1 }}</a>
+          </li>
+        </ng-container>
+        <li class="page-item" *ngIf="currentPage < totalPages">
+          <a class="page-link" (click)="onPageChange(currentPage + 1)">
+            &raquo;
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

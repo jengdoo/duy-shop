@@ -1,4 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { CartService } from '../../service/cart.service';
 import { ProductService } from '../../service/product.service';
 import { Product } from '../../models/product';
@@ -7,6 +14,9 @@ import { UserService } from '../../service/user.service';
 import { UserResponse } from '../../response/user/user.response';
 import { Router } from '@angular/router';
 import { TokenService } from '../../service/token.service';
+import { CategoryService } from '../../service/category.service';
+import { Category } from '../../models/category';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -14,16 +24,20 @@ import { TokenService } from '../../service/token.service';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
+  isModalOpen = false;
   cartProductCount: number = 0;
   cartItems: { product: Product; quantity: number }[] = [];
   userResponse?: UserResponse | null;
+  categories: Category[] = [];
   private cartSubscription: Subscription = new Subscription();
 
   constructor(
     private cartService: CartService,
     private userService: UserService,
     private router: Router,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private categoryService: CategoryService,
+    private productService: ProductService
   ) {}
 
   ngOnInit(): void {
@@ -38,8 +52,8 @@ export class HeaderComponent implements OnInit {
       },
     });
     this.userResponse = this.userService.getUserFromLocalStorage();
+    this.getCategories();
   }
-
   ngOnDestroy(): void {
     this.cartSubscription.unsubscribe();
   }
@@ -52,6 +66,27 @@ export class HeaderComponent implements OnInit {
     localStorage.removeItem('user');
     this.tokenService.removeToken();
     this.userResponse = null; // Xóa thông tin người dùng
-    this.router.navigate(['/login']); // Chuyển hướng về trang chính hoặc trang đăng nhập
+    this.router.navigate(['/']); // Chuyển hướng về trang chính hoặc trang đăng nhập
+  }
+  openModal(): void {
+    this.isModalOpen = true;
+  }
+  closeModal(): void {
+    this.isModalOpen = false;
+  }
+  getCategories() {
+    this.categoryService.getCategory().subscribe({
+      next: (categories: Category[]) => {
+        debugger;
+        this.categories = categories;
+      },
+      complete: () => {
+        debugger;
+      },
+      error: (error: any) => {
+        debugger;
+        console.log('error category', error);
+      },
+    });
   }
 }

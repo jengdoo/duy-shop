@@ -1,0 +1,172 @@
+/* Thanh bên (Sidebar) */
+#sidebar {
+  height: 100vh;
+  width: 250px; /* Chiều rộng mặc định */
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #343a40; /* Màu nền tối */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: width 0.3s ease;
+  overflow: hidden;
+}
+
+/* Khi thanh bên bị thu hẹp */
+#sidebar.collapsed {
+  width: 70px; /* Chiều rộng khi thu hẹp */
+}
+
+#sidebar.collapsed .nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#sidebar.collapsed .nav-link {
+  display: none; /* Ẩn văn bản khi thu hẹp */
+}
+
+#sidebar.collapsed h4 {
+  display: none; /* Ẩn tiêu đề khi thu hẹp */
+}
+#sidebar.collapsed .name-admin {
+  display: none; /* Ẩn tiêu đề khi thu hẹp */
+}
+#sidebar.collapsed .item-sidebar {
+  border: none;
+}
+.item-sidebar {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+.item-sidebar > p:hover {
+  background: #495057;
+}
+.column-sidebar .item-sidebar-bottom {
+  bottom: 0;
+}
+/* Nút bật/tắt thanh bên */
+#sidebarToggle {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 1.5rem; /* Kích thước biểu tượng */
+  border: none;
+  background-color: transparent;
+  color: #fff; /* Màu sắc biểu tượng */
+  z-index: 1000; /* Đảm bảo biểu tượng không bị che khuất */
+}
+.nav-link i {
+  padding-right: 10px;
+}
+/* Điều chỉnh nội dung khi thanh bên bị thu hẹp */
+#content {
+  margin-left: 250px;
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+}
+
+#content.collapsed {
+  margin-left: 70px;
+}
+.item-sidebar .col a {
+  margin: 10px 0;
+}
+.item-sidebar .col a i {
+  font-size: 11px;
+}
+.item-sidebar span {
+  font-size: 11px;
+}
+.item-sidebar .row .col .collapse :hover {
+  background: rgb(3, 3, 22);
+}
+#icon-bar {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  right: -60px;
+  transition: right 0.3s;
+}
+
+#icon-bar a {
+  display: block;
+  text-align: center;
+  padding: 16px;
+  transition: all 0.3s ease;
+  color: white;
+  font-size: 20px;
+}
+
+.icon-bar a:hover {
+  background-color: #000;
+}
+
+.facebook {
+  background: #3b5998;
+  color: white;
+}
+
+.twitter {
+  background: #55acee;
+  color: white;
+}
+
+.google {
+  background: #dd4b39;
+  color: white;
+}
+
+.linkedin {
+  background: #007bb5;
+  color: white;
+}
+
+.youtube {
+  background: #bb0000;
+  color: white;
+}
+
+.content {
+  margin-left: 75px;
+  font-size: 30px;
+}
+/* Responsive */
+@media (max-width: 767px) {
+  #sidebar {
+    width: 100%; /* Chiều rộng 100% trên màn hình nhỏ */
+    height: auto; /* Chiều cao tự động */
+    position: relative; /* Đặt lại vị trí để thanh bên không cố định */
+  }
+
+  #sidebar.collapsed {
+    width: 100%;
+  }
+  #sidebarToggle {
+    position: relative;
+    top: auto;
+    right: auto;
+    margin: 10px;
+    font-size: 1.25rem;
+    background-color: #495057;
+  }
+  /* Căn chỉnh nội dung */
+  #content {
+    margin-left: 0; /* Loại bỏ lề khi thanh bên ở chế độ thu hẹp */
+    padding: 15px;
+  }
+  .name-admin {
+    display: none;
+  }
+  .item-sidebar {
+    margin: 5px 0;
+  }
+  .item-sidebar:hover {
+    background: #232222;
+    color: #000;
+  }
+  .nav-link i {
+    padding-right: 10px;
+  }
+}

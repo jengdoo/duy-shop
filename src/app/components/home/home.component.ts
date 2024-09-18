@@ -1,5 +1,5 @@
 import { Product } from './../../models/product';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
 import { environment } from '../../environments/environment';
@@ -32,7 +32,6 @@ export class HomeComponent implements OnInit {
   quantity: number = 1;
   constructor(
     private productService: ProductService,
-    private tokenService: TokenService,
     private categoryService: CategoryService,
     private router: Router,
     private snackBar: MatSnackBar,
@@ -47,32 +46,6 @@ export class HomeComponent implements OnInit {
     );
     this.getCategories();
   }
-  // getProducts(page: number, limit: number) {
-  //   this.tokenService.removeToken();
-  //   this.productService.getProducts(page, limit).subscribe({
-  //     next: (response: any) => {
-  //       debugger;
-  //       response.productResponseList.forEach((product: Product) => {
-  //         debugger;
-  //         product.url = `${environment.apiBaseUrl}/product/images/${product.thumbnail}`;
-  //       });
-  //       this.productResponseList = response.productResponseList;
-  //       this.totalPages = response.totalPage;
-  //       this.visiblePages = this.generateVisiblePageArray(
-  //         this.currentPage,
-  //         this.totalPages
-  //       );
-  //     },
-  //     complete: () => {
-  //       debugger;
-  //     },
-  //     error: (error: any) => {
-  //       debugger;
-  //       console.error('error fetching product:', error);
-  //       alert(error);
-  //     },
-  //   });
-  // }
   onPageChange(page: number) {
     debugger;
     this.currentPage = page;
@@ -137,6 +110,7 @@ export class HomeComponent implements OnInit {
             product.url = `${environment.apiBaseUrl}/product/images/${product.thumbnail}`;
           });
           this.productResponseList = response.productResponseList;
+          this.product = response.productResponseList;
           this.totalPages = response.totalPage;
           this.visiblePages = this.generateVisiblePageArray(
             this.currentPage,
@@ -153,10 +127,13 @@ export class HomeComponent implements OnInit {
     debugger;
     this.router.navigate(['/product', productId]);
   }
-  buyNow(): void {
-    if (this.product) {
-      if (this.product.quantity >= 1) {
-        this.cartService.addToCart(this.product.id, this.quantity);
+  buyNow(product: Product): void {
+    const productId = this.productResponseList.find(
+      (item) => item.id === product.id
+    );
+    if (productId) {
+      if (productId.quantity >= this.quantity && this.quantity > 0) {
+        this.cartService.addToCart(product.id, this.quantity);
         // Chuyển hướng đến trang đơn hàng
         this.router.navigate(['/orders']); // Thay đổi đường dẫn nếu cần
       } else {
@@ -174,10 +151,17 @@ export class HomeComponent implements OnInit {
       panelClass: ['success-snackbar'],
     });
   }
-  addToCart() {
-    if (this.product) {
-      if (this.product.quantity >= 1) {
-        this.cartService.addToCart(this.product.id, this.quantity);
+  addToCart(product: Product) {
+    debugger;
+    // Kiểm tra xem sản phẩm có trong danh sách hay không
+    const foundProduct = this.productResponseList.find(
+      (item) => item.id === product.id
+    );
+
+    if (foundProduct) {
+      // Kiểm tra số lượng sản phẩm
+      if (foundProduct.quantity >= this.quantity && this.quantity > 0) {
+        this.cartService.addToCart(product.id, this.quantity);
         this.showSuccessMessage('Sản phẩm đã được thêm vào giỏ hàng!');
       } else {
         this.showSuccessMessage('Sản phẩm đã hết hàng hoặc số lượng không đủ!');
