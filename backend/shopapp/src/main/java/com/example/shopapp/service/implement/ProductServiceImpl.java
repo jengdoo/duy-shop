@@ -36,6 +36,7 @@ public class ProductServiceImpl implements ProductService {
                 .name(productDTO.getName())
                 .price(productDTO.getPrice())
                 .thumbnail(productDTO.getThumbnail())
+                .quantity(productDTO.getQuantity())
                 .description(productDTO.getDescription())
                 .category(categoryExisted)
                 .build();

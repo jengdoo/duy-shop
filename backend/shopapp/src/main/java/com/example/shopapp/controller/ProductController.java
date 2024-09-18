@@ -69,18 +69,31 @@ public class ProductController {
     }
     @PostMapping(value = "/add")
     public ResponseEntity<?> addCategory(@Valid @RequestBody ProductDTO productDTO,
-                                         BindingResult result){
+                                         BindingResult result) {
         try {
-            if(result.hasErrors()){
-                List<String> errorMessages = result.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList();
+            if (result.hasErrors()) {
+                List<String> errorMessages = result.getFieldErrors()
+                        .stream()
+                        .map(FieldError::getDefaultMessage)
+                        .toList();
                 return ResponseEntity.badRequest().body(errorMessages);
             }
-            Product newProduct =productService.createProduct(productDTO);
-            return ResponseEntity.ok(localizationUtil.getLocalizedMessage(MessageKeys.INSERT_PRODUCT_SUCCESSFULLY,newProduct));
-        }catch (Exception e){
+
+            Product newProduct = productService.createProduct(productDTO);
+
+            // Trả về phản hồi JSON hợp lệ
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", localizationUtil.getLocalizedMessage(MessageKeys.INSERT_PRODUCT_SUCCESSFULLY));
+            response.put("product", newProduct); // Hoặc thêm bất kỳ thông tin nào bạn muốn trả về
+
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(response);
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
     @PostMapping(value = "uploads/{id}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> uploadImages(@PathVariable("id") Long productId,@ModelAttribute("files") List<MultipartFile> files){
         try {

@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String login(String phone, String password,Long roleId) throws Exception {
+    public String login(String phone, String password) throws Exception {
        Optional<User> userOptional= userRepo.findByPhoneNumber(phone);
        if(userOptional.isEmpty()){
            throw new DataNotFoundException("invalid phone number or password");
@@ -73,7 +73,8 @@ public class UserServiceImpl implements UserService {
                 throw new BadCredentialsException("Wrong phone number or password");
             }
         }
-        Optional<Role> optionalRole = roleRepo.findById(roleId);
+        Optional<Role> optionalRole = roleRepo.findById(userOptional.get().getRole().getId());
+        Long roleId = optionalRole.get().getId();
         if(optionalRole.isEmpty()||!roleId.equals(existedUser.getRole().getId())){
             throw new DataNotFoundException(localizationUtil.getLocalizedMessage(MessageKeys.ACCOUNT_HAVE_NOT_ACCESS));
         }

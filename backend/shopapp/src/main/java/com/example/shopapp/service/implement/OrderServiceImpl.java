@@ -10,9 +10,13 @@ import com.example.shopapp.repositories.OrderRepo;
 import com.example.shopapp.repositories.ProductRepo;
 import com.example.shopapp.repositories.UserRepo;
 import com.example.shopapp.response.OrderResponse;
+import com.example.shopapp.response.OrderResponseNew;
 import com.example.shopapp.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Or;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
@@ -131,4 +135,22 @@ public class OrderServiceImpl implements OrderService {
         List<Order> order = orderRepo.findByUserId(userId);
         return order.stream().map(OrderResponse::convertRespo).toList();
     }
+
+    @Override
+    public Page<OrderResponseNew> getOrdersByKeyword(String keyword, Pageable pageable) {
+        Page<Order> orderPage = orderRepo.findByKeyword(keyword,pageable);
+        return orderPage.map(OrderResponseNew::convertResponseNew);
+    }
+
+    @Override
+    public OrderResponse updateStatus(Long id, String status) throws Exception {
+        if (!OrderStatus.isValidStatus(status)) {
+            throw new IllegalArgumentException("Invalid status provided");
+        }
+        Order order = orderRepo.findById(id).orElseThrow(() -> new DataNotFoundException("Order not found"));
+        order.setStatus(status);
+        orderRepo.save(order);
+        return OrderResponse.convertRespo(order);
+    }
+
 }

@@ -3,9 +3,12 @@ package com.example.shopapp.service.implement;
 import com.example.shopapp.Model.Category;
 import com.example.shopapp.dto.CategoryDTO;
 import com.example.shopapp.repositories.CategoryRepo;
+import com.example.shopapp.response.CategoryResponse;
 import com.example.shopapp.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,5 +44,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteCategory(Long id) {
         categoryRepo.deleteById(id);
+    }
+
+    @Override
+    public Page<CategoryResponse> pageCategory(String keyword, Pageable pageable) {
+        Page<Category> categoryPage =categoryRepo.findByKeywordCategory(keyword,pageable);
+        return categoryPage.map(CategoryResponse::convertCategoryResponse);
     }
 }

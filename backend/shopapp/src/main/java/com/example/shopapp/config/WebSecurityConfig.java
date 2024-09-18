@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -26,6 +27,7 @@ import java.util.List;
 @Configuration
 //@EnableMethodSecurity
 @RequiredArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
 @EnableWebMvc
 public class WebSecurityConfig {
@@ -61,6 +63,7 @@ public class WebSecurityConfig {
                                     .requestMatchers(HttpMethod.GET,String.format("%s/orders/**",apiPrefix)).permitAll()
                                     .requestMatchers(HttpMethod.DELETE,String.format("%s/orders/**",apiPrefix)).hasRole(Role.ADMIN)
                                     .requestMatchers(HttpMethod.PUT,String.format("%s/orders/**",apiPrefix)).hasRole(Role.ADMIN)
+//                                    .requestMatchers(HttpMethod.GET,String.format("%s/orders/get-orders-by-keyword",apiPrefix)).hasRole(Role.ADMIN)
 
                                     .requestMatchers(HttpMethod.POST,String.format("%s/order_details/**",apiPrefix)).hasAnyRole(Role.USER)
                                     .requestMatchers(HttpMethod.GET,String.format("%s/order_details/**",apiPrefix)).hasAnyRole(Role.USER,Role.ADMIN)

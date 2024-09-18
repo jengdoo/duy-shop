@@ -2,13 +2,21 @@ package com.example.shopapp.controller;
 import com.example.shopapp.Model.Order;
 import com.example.shopapp.components.LocalizationUtil;
 import com.example.shopapp.dto.OrderDTO;
+import com.example.shopapp.response.OrderListResponse;
 import com.example.shopapp.response.OrderResponse;
+import com.example.shopapp.response.OrderResponseNew;
 import com.example.shopapp.service.OrderService;
 import com.example.shopapp.utils.MessageKeys;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Or;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -64,5 +72,30 @@ public class OrderController {
     public ResponseEntity<?> deleteOrders(@Valid @PathVariable Long id){
         orderService.deleteOrder(id);
         return ResponseEntity.ok(localizationUtil.getLocalizedMessage(MessageKeys.DELETE_ORDER_SUCCESSFULLY));
+    }
+    @GetMapping("/get-orders-by-keyword")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<OrderListResponse> getOrdersByKeyword(
+            @RequestParam(defaultValue = "",required = false) String keyword,
+            @RequestParam(defaultValue = "0",required = false) int page,
+            @RequestParam(defaultValue = "10",required = false) int limit){
+        Pageable pageable = PageRequest.of(page,limit, Sort.by("id").ascending());
+        Page<OrderResponseNew> orders = orderService.getOrdersByKeyword(keyword,pageable);
+        List<OrderResponseNew> orderResponses = orders.getContent();
+        int totalPage = orders.getTotalPages();
+        int pageCurrent = orders.getNumber();
+        int pageSizeCurrent = orders.getSize();
+        return ResponseEntity.ok(OrderListResponse.builder()
+                .orderResponseList(orderResponses)
+                .page(pageCurrent)
+                .pageSize(pageSizeCurrent)
+                .totalPage(totalPage)
+                .build());
+    }
+    @PutMapping("status/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> updateOrderStatus(@PathVariable Long id, @RequestBody String status) throws Exception {
+        OrderResponse orderResponse = orderService.updateStatus(id, status);
+        return ResponseEntity.ok(orderResponse);
     }
 }
