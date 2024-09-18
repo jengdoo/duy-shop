@@ -1,3 +1,4 @@
+import { ProductDTO } from './../dtos/products/product.dto';
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -9,6 +10,7 @@ import { Product } from '../models/product';
 })
 export class ProductService {
   private apiGetProduct = `${environment.apiBaseUrl}/product`;
+  private apiCreateProduct = `${environment.apiBaseUrl}/product/add`;
   constructor(private http: HttpClient) {}
   getProducts(
     keyword: string,
@@ -41,5 +43,8 @@ export class ProductService {
         params,
       }
     );
+  }
+  createProduct(productDTO: ProductDTO): Observable<any> {
+    return this.http.post(this.apiCreateProduct, productDTO);
   }
 }

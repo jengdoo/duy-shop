@@ -10,14 +10,48 @@
       </div>
       <div class="row" *ngIf="orderResponse">
         <div class="info-receiver">
-          <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+          <nav
+            style="--bs-breadcrumb-divider: '>'"
+            class="move"
+            aria-label="breadcrumb"
+          >
             <ol class="breadcrumb">
-              <li class="breadcrumb-item">
-                <a href="#">{{ orderResponse.status }}</a>
-              </li>
-              <li class="breadcrumb-item active" aria-current="page">
-                Library
-              </li>
+              <ul class="order-status">
+                <li
+                  class="status-item"
+                  [ngClass]="{ active: orderResponse.status === 'PENDING' }"
+                >
+                  ĐANG CHỜ XỬ LÝ
+                </li>
+                <i class="fa-solid fa-arrow-right"></i>
+                <li
+                  class="status-item breadcrumb-item"
+                  [ngClass]="{ active: orderResponse.status === 'PROCESSING' }"
+                >
+                  ĐÃ XÁC NHẬN ĐƠN
+                </li>
+                <i class="fa-solid fa-arrow-right"></i>
+                <li
+                  class="status-item"
+                  [ngClass]="{ active: orderResponse.status === 'SHIPPED' }"
+                >
+                  ĐANG VẬN CHUYỂN
+                </li>
+                <i class="fa-solid fa-arrow-right"></i>
+                <li
+                  class="status-item breadcrumb-item"
+                  [ngClass]="{ active: orderResponse.status === 'DELIVERED' }"
+                >
+                  ĐÃ GIAO
+                </li>
+                <i class="fa-solid fa-arrow-right"></i>
+                <li
+                  class="status-item breadcrumb-item"
+                  [ngClass]="{ active: orderResponse.status === 'CANCELLED' }"
+                >
+                  ĐÃ HỦY
+                </li>
+              </ul>
             </ol>
           </nav>
           <h3>Thông tin người nhận</h3>
