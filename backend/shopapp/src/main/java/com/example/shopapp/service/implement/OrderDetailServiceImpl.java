@@ -10,6 +10,7 @@ import com.example.shopapp.repositories.ProductRepo;
 import com.example.shopapp.response.OrderDetailResponse;
 import com.example.shopapp.response.OrderResponse;
 import com.example.shopapp.service.OrderDetailService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     private final OrderRepo orderRepo;
     private final ProductRepo productRepo;
     @Override
+    @Transactional
     public OrderDetailResponse createOrderDetail(OrderDetailDTO orderDetailDTO) {
         Order order = orderRepo.findById(orderDetailDTO.getOrderId()).orElseThrow(()->new RuntimeException("Not found order id:"+orderDetailDTO.getOrderId()));
         Product product = productRepo.findById(orderDetailDTO.getProductId()).orElseThrow(()->new RuntimeException("Not found product id:"+orderDetailDTO.getProductId()));
@@ -42,6 +44,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     }
 
     @Override
+    @Transactional
     public OrderDetailResponse updateOrderDetail(Long id, OrderDetailDTO orderDetailDTO) {
         OrderDetail orderDetail = orderDetailRepo.findById(id).orElseThrow(()->new RuntimeException("not found order detail with id:"+id));
         Order order = orderRepo.findById(orderDetailDTO.getOrderId()).orElseThrow(()->new RuntimeException("Not found order id:"+orderDetailDTO.getOrderId()));
@@ -56,6 +59,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     }
 
     @Override
+    @Transactional
     public void deleteOrderDetail(Long id) {
         OrderDetail orderDetail = orderDetailRepo.findById(id).orElseThrow(()->new RuntimeException("not find order detail with id:"+id));
         if(orderDetail!=null){

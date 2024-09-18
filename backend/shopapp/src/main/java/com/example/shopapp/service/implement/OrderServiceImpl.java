@@ -12,6 +12,7 @@ import com.example.shopapp.repositories.UserRepo;
 import com.example.shopapp.response.OrderResponse;
 import com.example.shopapp.response.OrderResponseNew;
 import com.example.shopapp.service.OrderService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Or;
 import org.modelmapper.ModelMapper;
@@ -36,6 +37,7 @@ public class OrderServiceImpl implements OrderService {
     private final ModelMapper modelMapper;
     private final ProductRepo productRepo;
     @Override
+    @Transactional
     public OrderResponse createOrder(OrderDTO orderDTO) throws Exception {
         // Tìm người dùng
         User user = userRepo.findById(orderDTO.getUserId())
@@ -111,6 +113,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderResponse updateOrder(Long id, OrderDTO orderDTO) {
         Order existedOrder = orderRepo.findById(id).orElseThrow(()->new RuntimeException("Not found order with id:"+id));
         User existedUser = userRepo.findById(orderDTO.getUserId()).orElseThrow(()->new RuntimeException("Not found order with id:"+orderDTO.getUserId()));
@@ -121,6 +124,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public void deleteOrder(Long id) {
         Optional<Order> orderOptional = orderRepo.findById(id);
         if(orderOptional.isPresent()){

@@ -12,6 +12,7 @@ import com.example.shopapp.repositories.ProductImageRepo;
 import com.example.shopapp.repositories.ProductRepo;
 import com.example.shopapp.response.ProductResponse;
 import com.example.shopapp.service.ProductService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
