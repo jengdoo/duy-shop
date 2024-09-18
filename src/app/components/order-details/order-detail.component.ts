@@ -9,6 +9,7 @@ import { environment } from '../../environments/environment';
 import { TokenService } from '../../service/token.service';
 import { OrderResponse } from '../../response/oder/order.response';
 import { OrderService } from '../../service/order.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-order-confirm',
@@ -43,17 +44,20 @@ export class OrderConfirmComponent implements OnInit {
   constructor(
     private cartService: CartService,
     private productService: ProductService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private route: ActivatedRoute
   ) {}
   ngOnInit(): void {
-    this.getOrderDetails();
+    this.route.params.subscribe((params) => {
+      const orderId = +params['id']; // Lấy ID từ URL
+      this.getOrderDetails(orderId); // Gọi hàm với ID
+    });
   }
-  getOrderDetails() {
-    const orderId = 10;
+  getOrderDetails(orderId: number) {
     this.orderService.getOrderById(orderId).subscribe({
       next: (response: any) => {
         console.log('Order Details Response:', response); // Kiểm tra cấu trúc dữ liệu
-        debugger;
+
         this.orderResponse = {
           ...this.orderResponse,
           id: response.id,
@@ -63,15 +67,16 @@ export class OrderConfirmComponent implements OnInit {
           phone_number: response.phone_number,
           address: response.address,
           note: response.note,
-          order_date: new Date(response.order_date),
+          order_date: new Date(response.order_date), // Chuyển đổi timestamp
           status: response.status,
           total_money: response.total_money,
           payment_method: response.payment_method,
           shipping_method: response.shipping_method,
           shipping_address: response.shipping_address,
           active: response.active,
-          shipping_date: new Date(response.shipping_date),
-          cart_items: response.order_details.map((order_detail: any) => {
+          shipping_date: new Date(response.shipping_date), // Nếu shipping_date là timestamp
+          cart_items: response.cart_items.map((order_detail: any) => {
+            debugger; // Kiểm tra tại đây
             return {
               ...order_detail,
               productId: {

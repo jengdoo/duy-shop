@@ -43,3 +43,28 @@ td {
   color: #fff;
   border-radius: 20px;
 }
+.move {
+  display: flex;
+  justify-content: center;
+}
+.order-status {
+  list-style-type: none;
+  padding: 0;
+}
+.order-status i {
+  margin: 0 20px;
+}
+.status-item {
+  display: inline-block;
+  margin-right: 10px;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.status-item.active {
+  background-color: #4caf50; /* Màu xanh cho trạng thái đang hoạt động */
+  color: white; /* Màu chữ trắng */
+  border-color: #4caf50; /* Đổi màu viền */
+}

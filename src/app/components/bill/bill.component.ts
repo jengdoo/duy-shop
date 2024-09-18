@@ -6,6 +6,8 @@ import { OrderResponse } from '../../response/oder/order.response';
 import { UserService } from '../../service/user.service';
 import { UserResponse } from '../../response/user/user.response';
 import { OrderDetail } from '../../models/oder-detail';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-bill',
@@ -17,10 +19,13 @@ import { OrderDetail } from '../../models/oder-detail';
 export class BillComponent implements OnInit {
   orderList: OrderResponse[] = [];
   userMap: Map<number, string> = new Map();
+  order?: OrderResponse | null;
   constructor(
     private orderService: OrderService,
     private tokenService: TokenService,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
   ngOnInit(): void {
     this.getOrderList();
@@ -31,8 +36,11 @@ export class BillComponent implements OnInit {
     this.orderService.getOrderListByUser(userId).subscribe({
       next: (response: any) => {
         debugger;
-        this.orderList = response;
-        this.loadUserName();
+        this.orderList = response || []; // Đảm bảo orderList không null
+        if (this.orderList.length > 0) {
+          this.order = this.orderList[0]; // Lấy đơn hàng đầu tiên nếu có
+          this.loadUserName();
+        }
       },
       complete: () => {
         debugger;
@@ -71,5 +79,14 @@ export class BillComponent implements OnInit {
       return 0; // Trả về 0 nếu cartItems không phải là mảng hoặc là undefined
     }
     return cartItems.reduce((total, item) => total + item.numberOfProducts, 0);
+  }
+
+  private showMessage(message: string) {
+    this.snackBar.open(message, 'Đóng', {
+      duration: 3000, // Thời gian hiển thị thông báo (3 giây)
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: ['success-snackbar'],
+    });
   }
 }

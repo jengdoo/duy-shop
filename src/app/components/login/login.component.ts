@@ -44,7 +44,7 @@ export class LoginComponent {
   dateOfBirth: Date;
   today = new Date();
   roles: Role[] = [];
-  selectedRole: Role | undefined;
+  // selectedRole: Role | undefined;
   userResponse?: UserResponse;
   constructor(
     private router: Router,
@@ -67,17 +67,17 @@ export class LoginComponent {
   }
 
   ngOnInit() {
-    debugger;
-    this.roleService.getRoles().subscribe({
-      next: (roles: Role[]) => {
-        this.roles = roles;
-        this.selectedRole = roles.length > 0 ? roles[0] : undefined;
-      },
-      error: (error: any) => {
-        debugger;
-        console.error('error getting roles:', error);
-      },
-    });
+    // this.roleService.getRoles().subscribe({
+    //   next: (roles: Role[]) => {
+    //     debugger;
+    //     this.roles = roles;
+    //     this.selectedRole = this.roles.length > 0 ? roles[0] : undefined;
+    //   },
+    //   error: (error: any) => {
+    //     debugger;
+    //     console.error('error getting roles:', error);
+    //   },
+    // });
   }
 
   log() {
@@ -133,7 +133,7 @@ export class LoginComponent {
     const loginDTO: LoginDTO = {
       phone_number: this.phoneNumberLogin,
       password: this.passwordLogin,
-      role_id: this.selectedRole?.id ?? 1,
+      // roles_id: this.selectedRole?.id ?? 1,
     };
     this.userService.login(loginDTO).subscribe({
       next: (response: LoginResponse) => {
@@ -155,7 +155,12 @@ export class LoginComponent {
               roles: response.roles,
             };
             this.userService.saveUserToLocalStorage(this.userResponse);
-            this.router.navigate(['/']);
+
+            if (this.userResponse?.roles.name == 'ADMIN') {
+              this.router.navigate(['/admin']);
+            } else if (this.userResponse.roles.name == 'USER') {
+              this.router.navigate(['/']);
+            }
           },
           complete: () => {
             debugger;

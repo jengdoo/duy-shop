@@ -1,0 +1,32 @@
+.table thead tr th {
+  text-align: center;
+}
+.table tbody tr td {
+  text-align: center;
+  align-items: center;
+  vertical-align: middle;
+}
+.description-product {
+  width: 150px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.product-admin-image {
+  width: 150px;
+  height: 150px;
+  margin: 10px 0;
+  overflow: hidden;
+}
+.image-product {
+  width: 100%;
+  object-fit: cover;
+  mix-blend-mode: multiply;
+}
+.paging {
+  margin: 28px 0 55px 0;
+  display: flex;
+  justify-content: center;
+}
