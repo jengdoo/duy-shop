@@ -17,4 +17,7 @@ public class MessageKeys {
     public static final String UPLOAD_IMAGES_MAX_5 = "product.upload_images.error_max_5_images";
     public static final String UPLOAD_IMAGES_FILE_LARGE  = "product.upload_images.file_large";
     public static final String UPLOAD_IMAGES_FILE_MUST_BE_IMAGE  = "product.upload_images.file_must_be_image";
+
+    public static final String ACCOUNT_HAVE_NOT_ACCESS = "login.role_not_exits";
+    public static final String ACCOUNT_IS_LOCKED = "login.role_is_locked";
 }

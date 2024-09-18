@@ -3,6 +3,7 @@ package com.example.shopapp.response;
 import com.example.shopapp.Model.Order;
 import com.example.shopapp.Model.OrderDetail;
 import com.example.shopapp.Model.Product;
+import com.example.shopapp.dto.ProductDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -16,7 +17,7 @@ import lombok.*;
 public class OrderDetailResponse {
     private Long id;
     private Long orderId;
-    private Long productId;
+    private ProductDTO productId;
     private Float price;
     private int numberOfProducts;
     private Float totalMoney;
@@ -26,7 +27,7 @@ public class OrderDetailResponse {
         return OrderDetailResponse.builder()
                 .id(orderDetail.getId())
                 .orderId(orderDetail.getOrder().getId())
-                .productId(orderDetail.getProduct().getId())
+                .productId(ProductDTO.convertProductDTO(orderDetail.getProduct()))
                 .price(orderDetail.getPrice())
                 .numberOfProducts(orderDetail.getNumberOfProducts())
                 .totalMoney(orderDetail.getTotalMoney())

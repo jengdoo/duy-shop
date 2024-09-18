@@ -39,7 +39,7 @@ public class User extends BaseModel implements UserDetails {
     @Column(name = "google_account_id")
     private int googleAccountId;
     @ManyToOne
-    @JoinColumn(name = "roles_id")
+    @JoinColumn(name = "roles_id", nullable = false)
     private Role role;
 
     @Override

@@ -57,18 +57,27 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request,response);
         }catch (Exception e){
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"Unauthorized");
+            e.printStackTrace();
         }
     }
-    private boolean isByPassToken(@NonNull HttpServletRequest request){
-        final List<Pair<String,String>> byPassTokens = Arrays.asList(
-                Pair.of(String.format("%s/product",apiPrefix),"GET"),
-                Pair.of(String.format("%s/roles",apiPrefix),"GET"),
-                Pair.of(String.format("%s/category",apiPrefix),"GET"),
-                Pair.of(String.format("%s/users/register",apiPrefix),"POST"),
-                Pair.of(String.format("%s/users/login",apiPrefix),"POST")
+    private boolean isByPassToken(@NonNull HttpServletRequest request) {
+        final List<Pair<String, String>> byPassTokens = Arrays.asList(
+                Pair.of(String.format("%s/product", apiPrefix), "GET"),
+                Pair.of(String.format("%s/roles", apiPrefix), "GET"),
+                Pair.of(String.format("%s/category", apiPrefix), "GET"),
+                Pair.of(String.format("%s/users/register", apiPrefix), "POST"),
+                Pair.of(String.format("%s/users/login", apiPrefix), "POST")
         );
+        String requestPath = request.getServletPath();
+        String requestMethod = request.getMethod();
+        if (requestPath.equals(String.format("%s/orders", apiPrefix)) && requestMethod.equals("GET")){
+            return true;
+        }
+//        else if (requestPath.equals(String.format("%s/orders/status", apiPrefix)) && requestMethod.equals("GET")){
+//            return true;
+//        }
         for (Pair<String, String> passToken : byPassTokens) {
-            if (request.getServletPath().contains(passToken.getFirst()) && request.getMethod().equals(passToken.getSecond()) ){
+            if (request.getServletPath().contains(passToken.getFirst()) && request.getMethod().equals(passToken.getSecond())) {
                 return true;
             }
         }

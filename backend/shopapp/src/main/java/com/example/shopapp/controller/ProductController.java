@@ -16,6 +16,7 @@ import com.github.javafaker.Faker;
 import jakarta.validation.Path;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,10 +37,8 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -70,18 +69,31 @@ public class ProductController {
     }
     @PostMapping(value = "/add")
     public ResponseEntity<?> addCategory(@Valid @RequestBody ProductDTO productDTO,
-                                         BindingResult result){
+                                         BindingResult result) {
         try {
-            if(result.hasErrors()){
-                List<String> errorMessages = result.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList();
+            if (result.hasErrors()) {
+                List<String> errorMessages = result.getFieldErrors()
+                        .stream()
+                        .map(FieldError::getDefaultMessage)
+                        .toList();
                 return ResponseEntity.badRequest().body(errorMessages);
             }
-            Product newProduct =productService.createProduct(productDTO);
-            return ResponseEntity.ok(localizationUtil.getLocalizedMessage(MessageKeys.INSERT_PRODUCT_SUCCESSFULLY,newProduct));
-        }catch (Exception e){
+
+            Product newProduct = productService.createProduct(productDTO);
+
+            // Trả về phản hồi JSON hợp lệ
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", localizationUtil.getLocalizedMessage(MessageKeys.INSERT_PRODUCT_SUCCESSFULLY));
+            response.put("product", newProduct); // Hoặc thêm bất kỳ thông tin nào bạn muốn trả về
+
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(response);
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
     @PostMapping(value = "uploads/{id}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> uploadImages(@PathVariable("id") Long productId,@ModelAttribute("files") List<MultipartFile> files){
         try {
@@ -180,8 +192,8 @@ public class ProductController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @GetMapping("{id}")
-    public ResponseEntity<?> getProductById(@RequestParam long id){
+    @GetMapping("/productId/{id}")
+    public ResponseEntity<?> getProductById(@PathVariable long id){
         try {
             Product product = productService.getProductById(id);
             return  ResponseEntity.ok(ProductResponse.convertResponse(product));
@@ -189,7 +201,50 @@ public class ProductController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-   // @PostMapping("/generateFakeProducts")
+    @GetMapping("/categoryId/{id}")
+    public ResponseEntity<?> getProductByCategoryId(@PathVariable long id){
+        try {
+            List<ProductResponse> products = productService.findByCategory(id);
+            return  ResponseEntity.ok(products);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @GetMapping("/by-ids")
+    public ResponseEntity<?> getProductsByIds(@RequestParam("ids") String ids) {
+        // Kiểm tra nếu tham số ids rỗng
+        if (ids == null || ids.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Tham số 'ids' không được rỗng.");
+        }
+
+        try {
+            // Chuyển đổi tham số ids thành danh sách các ID sản phẩm
+            List<Long> productIds = Arrays.stream(ids.split(","))
+                    .map(id -> {
+                        try {
+                            return Long.parseLong(id.trim());
+                        } catch (NumberFormatException e) {
+                            throw new IllegalArgumentException("ID không hợp lệ: " + id);
+                        }
+                    })
+                    .collect(Collectors.toList());
+
+            // Tìm các sản phẩm dựa trên danh sách ID
+            List<Product> products = productService.findProductsByIds(productIds);
+
+            // Trả về danh sách sản phẩm
+            return ResponseEntity.ok(products.stream().map(ProductResponse::convertResponse));
+
+        } catch (IllegalArgumentException e) {
+            // Trả về lỗi nếu ID không hợp lệ
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            // Xử lý các lỗi khác
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi khi lấy sản phẩm: " + e.getMessage());
+        }
+    }
+
+    // @PostMapping("/generateFakeProducts")
     private ResponseEntity<String> generateFakeProducts(){
         Faker faker = new Faker();
 

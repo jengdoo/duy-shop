@@ -7,7 +7,9 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Getter
@@ -39,4 +41,6 @@ public class OrderDTO {
     private LocalDate shippingDate;
     @JsonProperty("payment_method")
     private String paymentMethod;
+    @JsonProperty("cart_items")
+    private List<CartItemDTO> cartItems = new ArrayList<>();
 }

@@ -36,6 +36,7 @@ public class ProductServiceImpl implements ProductService {
                 .name(productDTO.getName())
                 .price(productDTO.getPrice())
                 .thumbnail(productDTO.getThumbnail())
+                .quantity(productDTO.getQuantity())
                 .description(productDTO.getDescription())
                 .category(categoryExisted)
                 .build();
@@ -104,5 +105,16 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductResponse> findByName(String name) {
         return productRepo.findByNameContaining(name).stream().map(ProductResponse::convertResponse).toList();
+    }
+
+    @Override
+    public List<ProductResponse> findByCategory(Long categoryId) {
+        List<Product> products = productRepo.findByCategoryId(categoryId);
+        return products.stream().map(ProductResponse::convertResponse).toList();
+    }
+
+    @Override
+    public List<Product> findProductsByIds(List<Long> productIds) {
+        return productRepo.findByProductById(productIds);
     }
 }

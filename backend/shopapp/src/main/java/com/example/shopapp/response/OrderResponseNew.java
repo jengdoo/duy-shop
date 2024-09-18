@@ -1,16 +1,11 @@
 package com.example.shopapp.response;
 
 import com.example.shopapp.Model.Order;
-import com.example.shopapp.Model.OrderStatus;
 import com.example.shopapp.Model.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -19,12 +14,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderResponse{
+public class OrderResponseNew {
     private Long id;
-    @JsonProperty("user_id")
-    private Long userId;
     @JsonProperty("fullname")
     private String fullName;
+    @JsonProperty("user_id")
+    private long userId;
     private String email;
     @JsonProperty("phone_number")
     private String phoneNumber;
@@ -50,11 +45,15 @@ public class OrderResponse{
     @JsonProperty("cart_items")
     private List<OrderDetailResponse> orderDetailResponses;
 
-    public static OrderResponse convertRespo(Order order){
-        return OrderResponse.builder()
+    public static OrderResponseNew convertResponseNew(Order order){
+        User user = order.getUser();
+
+        // Nếu user là null, bạn có thể chọn cách xử lý khác, ví dụ như đặt userId là -1 hoặc để trống
+        Long userId = (user != null) ? user.getId() : 1;
+        return OrderResponseNew.builder()
                 .id(order.getId())
-                .userId(order.getUser().getId())
                 .fullName(order.getFullName())
+                .userId(userId)
                 .email(order.getEmail())
                 .phoneNumber(order.getPhoneNumber())
                 .address(order.getAddress())

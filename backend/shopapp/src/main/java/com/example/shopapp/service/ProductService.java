@@ -21,4 +21,6 @@ public interface ProductService {
     boolean existsByName(String name);
      ProductImage createProductImage(Long productId, ProductImageDTO productImageDTO) throws Exception;
      List<ProductResponse> findByName(String name);
+     List<ProductResponse> findByCategory(Long categoryId);
+     List<Product> findProductsByIds(List<Long> productIds);
 }
