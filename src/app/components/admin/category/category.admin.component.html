@@ -51,7 +51,15 @@
             <td>{{ item.id }}</td>
             <td>{{ item.name }}</td>
             <td>
-              <button class="btn btn-danger">Delete</button>
+              <button
+                class="btn btn-danger me-3"
+                (click)="deleteCategory(item.id)"
+              >
+                <i class="fa-solid fa-trash-can-arrow-up me-3"></i>Xóa
+              </button>
+              <button class="btn btn-warning" (click)="clickToUpdate(item.id)">
+                <i class="fa-regular fa-pen-to-square me-3"></i>Cập nhật
+              </button>
             </td>
           </tr>
         </ng-container>

@@ -65,12 +65,46 @@ export class CategoryAdminComponent implements OnInit {
       });
     }
   }
+  deleteCategory(categoryId: number) {
+    debugger;
+    categoryId;
+    this.categoryService.deleteCategory(categoryId).subscribe({
+      next: (response: any) => {
+        debugger;
+        this.getAllCategory();
+        this.showMessage('Xóa thành công!');
+      },
+      complete: () => {
+        debugger;
+      },
+      error: (errors: any) => {
+        debugger;
+        this.showMessage('Xóa thất bại!');
+      },
+    });
+  }
   private showMessage(message: string) {
     this.snackBar.open(message, 'Đóng', {
       duration: 3000, // Thời gian hiển thị thông báo (3 giây)
       horizontalPosition: 'center',
       verticalPosition: 'top',
       panelClass: ['success-snackbar'],
+    });
+  }
+  clickToUpdate(categoryId: number) {
+    debugger;
+    this.categoryService.getCategoryById(categoryId).subscribe({
+      next: (response: any) => {
+        debugger;
+        this.router.navigate(['admin/category/update', categoryId]);
+      },
+      complete: () => {
+        debugger;
+      },
+      error: (error: any) => {
+        debugger;
+        console.log('error', error);
+      },
     });
   }
 }
