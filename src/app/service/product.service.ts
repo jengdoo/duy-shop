@@ -47,4 +47,7 @@ export class ProductService {
   createProduct(productDTO: ProductDTO): Observable<any> {
     return this.http.post(this.apiCreateProduct, productDTO);
   }
+  deleteProduct(productId: number): Observable<any> {
+    return this.http.delete(`${this.apiGetProduct}/delete?id=${productId}`);
+  }
 }

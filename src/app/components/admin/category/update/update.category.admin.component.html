@@ -1,3 +1,54 @@
-<div class="container mt-5">
-  <h2 class="text-center mb-4">Update category</h2>
+<div class="update-category">
+  <div class="category-container">
+    <h2 class="header">Cập nhật danh mục</h2>
+    <div class="content" style="display: flex; justify-content: center">
+      <div class="form-category">
+        <form
+          [formGroup]="categoryForm"
+          (submit)="onUpdate()"
+          class="needs-validation"
+          novalidate
+        >
+          <div class="mb-3 col-2 input-content">
+            <label for="id" class="form-label">ID</label>
+            <input
+              id="id"
+              formControlName="id"
+              class="form-control"
+              [value]="category?.id"
+              readonly
+              required
+            />
+          </div>
+          <div class="mb-3 col-2 input-content">
+            <label for="name" class="form-label">Tên danh mục</label>
+            <input
+              id="name"
+              formControlName="name"
+              class="form-control"
+              [value]="category?.name"
+              required
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="
+                categoryForm.get('name')?.invalid &&
+                (categoryForm.get('name')?.touched ||
+                  categoryForm.get('name')?.dirty)
+              "
+            >
+              Vui lòng nhập tên danh mục!
+            </div>
+          </div>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="categoryForm.invalid"
+          >
+            Cập nhật danh mục
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>

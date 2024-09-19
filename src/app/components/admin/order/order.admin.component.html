@@ -18,7 +18,6 @@
           <th>Shipping address</th>
           <th>Shipping date</th>
           <th>Payment method</th>
-          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -49,9 +48,6 @@
             <td>{{ item.shipping_address }}</td>
             <td>{{ item.shipping_date | date }}</td>
             <td>{{ item.payment_method }}</td>
-            <td>
-              <button class="btn btn-danger">Delete</button>
-            </td>
           </tr>
         </ng-container>
       </tbody>

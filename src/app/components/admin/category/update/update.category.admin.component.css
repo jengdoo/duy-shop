@@ -1,15 +1,23 @@
-.create-product {
+.update-category {
+  display: flex;
+  justify-content: center;
   background-color: #f8f9fa;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
-.container {
-  max-width: 600px;
-  margin: auto;
-}
-
 h2 {
   color: #007bff;
+}
+.category-container {
+  display: flex;
+  flex-direction: column;
+}
+.form-category {
+  display: block;
+  width: 400px;
+}
+
+.form-category .input-content {
+  width: 100%;
 }
