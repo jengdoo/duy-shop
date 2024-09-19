@@ -1,0 +1,64 @@
+<app-header></app-header>
+<div class="container">
+  <div class="text-center h1">Hóa đơn</div>
+  <div class="search-bill">
+    <input type="text" placeholder="Search..." class="search-input" />
+  </div>
+  <div class="list-bill">
+    <table id="example" class="table table-hover">
+      <thead class="table-header">
+        <tr>
+          <th>Số hóa đơn #</th>
+          <th>Trạng thái/th></th>
+          <th>Người mua</th>
+          <th>Số lượng</th>
+          <th>Tổng tiền</th>
+          <th>Ngày mua</th>
+          <th>Trạng thái</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of orderList">
+          <td>{{ item.id }}</td>
+          <td>
+            {{ item.active ? "Đã thanh toán" : "Chưa thanh toán" }}
+          </td>
+          <td>{{ getUserFullName(item.user_id) }}</td>
+          <td>{{ getTotalQuantity(item.cart_items) }}</td>
+          <td>{{ item.total_money }}</td>
+          <td>{{ item.order_date | date : "fullDate" }}</td>
+          <td>
+            <div class="detail-orders">
+              <a [routerLink]="['/orders', item.id]">
+                <!-- Sử dụng dấu ngoặc vuông và biểu thức Angular -->
+                <i class="fa-solid fa-eye"></i>
+                <span>XEM</span>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <!-- Thêm nhiều hàng hơn ở đây -->
+      </tbody>
+    </table>
+    <div class="paging-bill">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

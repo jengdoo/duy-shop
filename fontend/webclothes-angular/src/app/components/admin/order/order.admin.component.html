@@ -1,0 +1,77 @@
+<div class="order">
+  <h2 class="text-center">Danh sách các đơn hàng</h2>
+  <div class="order-content">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>User Id</th>
+          <th>Full name</th>
+          <th>Email</th>
+          <th>Phone number</th>
+          <th>Address</th>
+          <th>Note</th>
+          <th>Order date</th>
+          <th>Status</th>
+          <th>Total money</th>
+          <th>Shipping method</th>
+          <th>Shipping address</th>
+          <th>Shipping date</th>
+          <th>Payment method</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let item of orders">
+          <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.user_id }}</td>
+            <td>{{ item.fullname }}</td>
+            <td>{{ item.email }}</td>
+            <td>{{ item.phone_number }}</td>
+            <td>{{ item.address }}</td>
+            <td>{{ item.note }}</td>
+            <td>{{ item.order_date | date }}</td>
+            <td>
+              <select
+                [(ngModel)]="item.status"
+                (change)="updateOrderStatus(item.id, item.status)"
+              >
+                <option value="PENDING">PENDING</option>
+                <option value="PROCESSING">PROCESSING</option>
+                <option value="SHIPPED">SHIPPED</option>
+                <option value="DELIVERED">DELIVERED</option>
+                <option value="CANCELLED">CANCELLED</option>
+              </select>
+            </td>
+            <td>{{ item.total_money }}</td>
+            <td>{{ item.shipping_method }}</td>
+            <td>{{ item.shipping_address }}</td>
+            <td>{{ item.shipping_date | date }}</td>
+            <td>{{ item.payment_method }}</td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+  <div class="paging">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item" *ngIf="currentPage > 0">
+          <a class="page-link" (click)="onPageChange(currentPage - 1)">
+            &laquo;
+          </a>
+        </li>
+        <ng-container *ngFor="let page of visiblePages">
+          <li class="page-item" [ngClass]="{ active: page === currentPage }">
+            <a class="page-link" (click)="onPageChange(page)">{{ page + 1 }}</a>
+          </li>
+        </ng-container>
+        <li class="page-item" *ngIf="currentPage < totalPages">
+          <a class="page-link" (click)="onPageChange(currentPage + 1)">
+            &raquo;
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

@@ -1,0 +1,145 @@
+<app-header></app-header>
+<div class="container">
+  <div class="product-detail">
+    <div class="row">
+      <!-- Carousel and Images -->
+      <div class="col-lg-6 col-xs-12">
+        <div id="carouselExampleInterval" class="carousel" data-bs-ride="true">
+          <div class="carousel-inner">
+            <div
+              class="carousel-item slide"
+              *ngFor="let image of product?.product_images; let i = index"
+              [ngClass]="{ active: i === currentImageIndex }"
+            >
+              <img [src]="image.image_url" class="d-block w-100 slide-image" />
+            </div>
+          </div>
+          <button
+            class="carousel-control-prev"
+            type="button"
+            data-bs-target="#carouselExampleInterval"
+            data-bs-slide="prev"
+            (click)="previousImage()"
+          >
+            <i
+              style="color: #595555; font-size: 32px"
+              class="fa-solid fa-chevron-left carousel-control"
+            ></i>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button
+            class="carousel-control-next"
+            type="button"
+            data-bs-target="#carouselExampleInterval"
+            data-bs-slide="next"
+            (click)="nextImage()"
+          >
+            <i
+              style="color: #595555; font-size: 32px"
+              class="fa-solid fa-chevron-right carousel-control"
+            ></i>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+        <div class="row">
+          <div
+            class="col-5 thumbnail-item"
+            *ngFor="let image of product?.product_images; let i = index"
+            [ngClass]="{
+              active: i === currentImageIndex,
+              selected: i === selectedImageIndex
+            }"
+            (click)="thumbnailClick(i)"
+          >
+            <img [src]="image.image_url" class="thumbnail-image" />
+            <i
+              class="fa-solid fa-check tick"
+              *ngIf="i === selectedImageIndex"
+            ></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Details -->
+      <div class="col-lg-6 col-xs-12">
+        <h4 class="product-detail-header">Thông tin chi tiết sản phẩm</h4>
+        <div class="product-detail-content">
+          <p>Tên sản phẩm: {{ product?.name }}</p>
+          <p>Giá: ${{ product?.price }}</p>
+          <div class="product-quantity">
+            <p>
+              Số lượng <sup>({{ product?.quantity }})</sup>
+            </p>
+
+            <div class="quantity">
+              <button (click)="decreaseQuantity()">-</button>
+              <input type="text" [value]="quantity" min="1" />
+              <button (click)="increaseQuantity()">+</button>
+            </div>
+          </div>
+          <p class="product-description">
+            Mô tả sản phẩm: {{ product?.description }}
+          </p>
+          <div class="product-action">
+            <div class="action-cart">
+              <button (click)="addToCart()">
+                <i class="fa-solid fa-cart-shopping"></i> Thêm vào giỏ hàng
+              </button>
+            </div>
+            <div class="action-buy">
+              <button (click)="buyNow()">Mua ngay</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Related Products -->
+    <div class="space-border">
+      <h1 class="border-text">Sản phẩm</h1>
+    </div>
+    <div class="row product-container" *ngIf="productsToShow.length > 0">
+      <div class="prev">
+        <i class="fa-solid fa-arrow-left" (click)="onPrev()"></i>
+      </div>
+      <div *ngFor="let product of productsToShow" class="col-lg-3 col-md-6">
+        <div class="product-same">
+          <div
+            class="product-same-image"
+            (click)="onProductClick(product.id)"
+            style="cursor: pointer"
+          >
+            <img [src]="product.url" alt="" />
+          </div>
+          <h3 class="product-same-name">{{ product.name }}</h3>
+          <p class="product-same-warranty">Bảo hành: 12 tháng</p>
+          <p class="product-same-price">
+            <b>Price:</b> ${{ product.price }}
+            <sup><del style="color: red">$100</del></sup>
+          </p>
+          <p class="product-same-description">
+            {{ product.description }}
+          </p>
+          <div class="product-same-rating">
+            <i class="fa-solid fa-star fa-lg"></i>
+            <i class="fa-solid fa-star fa-lg"></i>
+            <i class="fa-solid fa-star fa-lg"></i>
+            <i class="fa-solid fa-star fa-lg"></i>
+            <i class="fa-solid fa-star-half-stroke fa-lg"></i>
+          </div>
+          <div class="product-same-action">
+            <button class="product-same-action-btn cart" (click)="addToCart()">
+              <i class="fa-solid fa-cart-shopping"></i>
+            </button>
+            <button class="product-same-action-btn buy" (click)="buyNow()">
+              Buy now
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="next">
+        <i class="fa-solid fa-arrow-right" (click)="onNext()"></i>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

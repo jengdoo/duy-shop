@@ -1,0 +1,61 @@
+.container {
+  padding: 100px 0;
+}
+.search-bill {
+  margin: 20px 0;
+}
+.search-input {
+  background-color: rgb(88, 88, 88, 0.5);
+  border: none;
+  outline: none;
+  height: 28px;
+  border-radius: 25px;
+  padding: 20px;
+  color: #fff;
+}
+.search-input::placeholder {
+  color: #fff;
+}
+.list-bill thead tr th {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  align-items: center;
+}
+.list-bill tbody tr td {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 400;
+  align-items: center;
+  padding: 15px 0;
+  /* -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis; */
+}
+/* .detail-orders {
+  margin: 10px 0;
+} */
+.detail-orders a {
+  background: #0d6efd;
+  text-decoration: none;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 20px;
+}
+.detail-orders a i {
+  margin-right: 10px;
+}
+.detail-orders a:hover {
+  background: #0d3d85;
+}
+.paging-bill {
+  display: flex;
+  justify-content: end;
+  margin: 15px 0;
+  padding: 10px;
+}
+.page-link {
+  border: none;
+  letter-spacing: 15px;
+}

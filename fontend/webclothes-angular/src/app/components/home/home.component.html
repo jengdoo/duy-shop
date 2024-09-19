@@ -1,0 +1,139 @@
+<app-header></app-header>
+<div class="container slide-container">
+  <div
+    id="carouselExampleInterval"
+    class="carousel slide"
+    data-bs-ride="carousel"
+  >
+    <div class="carousel-inner">
+      <div class="carousel-item slide-item active" data-bs-interval="10000">
+        <img
+          src="https://tse2.mm.bing.net/th?id=OIP.tFByL9mqH4BjB8UxCjPCHAHaEM&pid=Api&P=0&h=220"
+          class="d-block w-100 slide-image"
+          alt="..."
+        />
+      </div>
+      <div class="carousel-item slide-item" data-bs-interval="2000">
+        <img
+          src="https://tse4.mm.bing.net/th?id=OIP.LZ1iGU9iMuPFsH6xLOJMdAHaEo&pid=Api&P=0&h=220"
+          class="d-block w-100 slide-image"
+          alt="..."
+        />
+      </div>
+      <div class="carousel-item slide-item">
+        <img
+          src="https://tse2.mm.bing.net/th?id=OIP.l193BmIzmyM7xHPNfxrJDAHaEK&pid=Api&P=0&h=220"
+          class="d-block w-100 slide-image"
+          alt="..."
+        />
+      </div>
+    </div>
+    <button
+      class="carousel-control-prev"
+      type="button"
+      data-bs-target="#carouselExampleInterval"
+      data-bs-slide="prev"
+    >
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button
+      class="carousel-control-next"
+      type="button"
+      data-bs-target="#carouselExampleInterval"
+      data-bs-slide="next"
+    >
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>
+<div class="container">
+  <div class="intro-section text-center">
+    <h1>Sản phẩm mới</h1>
+  </div>
+  <div class="search-box">
+    <input
+      type="text"
+      class="form-control search-input"
+      placeholder="Search for ..."
+      [(ngModel)]="keyword"
+    />
+    <select
+      class="form-control select-category-product"
+      [(ngModel)]="selectedCategoryId"
+    >
+      <option [value]="0">All</option>
+      <option *ngFor="let category of categories" [value]="category.id">
+        {{ category.name }}
+      </option>
+    </select>
+    <button class="btn btn-success" (click)="searchProducts()">Tim</button>
+  </div>
+  <div class="row">
+    <div
+      class="col-lg-3 col-md-6 col-xs-12"
+      *ngFor="let product of productResponseList"
+    >
+      <div class="product-item">
+        <div class="product-image" (click)="onProductClick(product.id)">
+          <img [src]="product.url" class="image-item" />
+        </div>
+        <h3 class="product-name">{{ product.name }}</h3>
+        <p class="product-warranty">Bảo hành: 12 tháng</p>
+        <p class="product-price">
+          Price: ${{ product.price }}
+          <sup><del style="font-weight: normal">$200</del></sup>
+        </p>
+        <p class="product-description">Mô tả: {{ product.description }}</p>
+        <div class="product-rating">
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star-half-stroke"></i>
+        </div>
+        <div class="product-action">
+          <button class="product-action-btn cart" (click)="addToCart(product)">
+            <i class="fa-solid fa-cart-shopping"></i>
+          </button>
+          <button class="product-action-btn buy" (click)="buyNow(product)">
+            Buy now
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="paging">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item" *ngIf="currentPage > 0">
+            <a
+              class="page-link"
+              href="#"
+              (click)="onPageChange(currentPage - 1)"
+            >
+              &laquo;
+            </a>
+          </li>
+          <ng-container *ngFor="let page of visiblePages">
+            <li class="page-item" [ngClass]="{ active: page === currentPage }">
+              <a class="page-link" (click)="onPageChange(page)" href="#">{{
+                page + 1
+              }}</a>
+            </li>
+          </ng-container>
+          <li class="page-item" *ngIf="currentPage < totalPages">
+            <a
+              class="page-link"
+              href="#"
+              (click)="onPageChange(currentPage + 1)"
+            >
+              &raquo;
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

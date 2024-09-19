@@ -1,0 +1,71 @@
+<div class="order">
+  <h2 class="text-center">Danh sách các danh mục</h2>
+  <div class="create-category">
+    <form
+      [formGroup]="categoryForm"
+      (ngSubmit)="onSubmit()"
+      class="needs-validation"
+      novalidate
+    >
+      <div class="mb-3 col-2">
+        <label for="name" class="form-label">Tên danh mục</label>
+        <input
+          id="name"
+          formControlName="name"
+          class="form-control"
+          placeholder="Nhập tên danh mục"
+          required
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="
+            categoryForm.get('name')?.invalid &&
+            (categoryForm.get('name')?.touched ||
+              categoryForm.get('name')?.dirty)
+          "
+        >
+          Vui lòng nhập tên danh mục!
+        </div>
+      </div>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="categoryForm.invalid"
+      >
+        Thêm danh mục
+      </button>
+    </form>
+  </div>
+  <div class="order-content">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Tên danh mục</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let item of categories">
+          <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.name }}</td>
+            <td>
+              <button
+                class="btn btn-danger"
+                style="margin-right: 10px"
+                (click)="deleteCategory(item.id)"
+              >
+                <i class="fa-solid fa-trash-can-arrow-up me-3"></i>Xóa
+              </button>
+              <button class="btn btn-warning" (click)="showId(item.id)">
+                <i class="fa-regular fa-pen-to-square me-3"></i>
+                Cập nhật
+              </button>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>

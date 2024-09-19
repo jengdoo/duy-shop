@@ -1,0 +1,133 @@
+<app-header></app-header>
+<div class="order-confirm">
+  <div class="container">
+    <div class="order-confirm-container">
+      <div class="order-confirm-header">
+        <div class="tile-order-confirm">
+          <h5>Xác nhận đơn hàng</h5>
+          <p>Cảm ơn bạn đã ghé thăm và mua hàng từ cửa hàng chúng tôi!</p>
+        </div>
+      </div>
+      <div class="row" *ngIf="orderResponse">
+        <div class="info-receiver">
+          <nav
+            style="--bs-breadcrumb-divider: '>'"
+            class="move"
+            aria-label="breadcrumb"
+          >
+            <ol class="breadcrumb">
+              <ul class="order-status">
+                <li
+                  class="status-item"
+                  [ngClass]="{ active: orderResponse.status === 'PENDING' }"
+                >
+                  ĐANG CHỜ XỬ LÝ
+                </li>
+                <i class="fa-solid fa-arrow-right"></i>
+                <li
+                  class="status-item breadcrumb-item"
+                  [ngClass]="{ active: orderResponse.status === 'PROCESSING' }"
+                >
+                  ĐÃ XÁC NHẬN ĐƠN
+                </li>
+                <i class="fa-solid fa-arrow-right"></i>
+                <li
+                  class="status-item"
+                  [ngClass]="{ active: orderResponse.status === 'SHIPPED' }"
+                >
+                  ĐANG VẬN CHUYỂN
+                </li>
+                <i class="fa-solid fa-arrow-right"></i>
+                <li
+                  class="status-item breadcrumb-item"
+                  [ngClass]="{ active: orderResponse.status === 'DELIVERED' }"
+                >
+                  ĐÃ GIAO
+                </li>
+                <i class="fa-solid fa-arrow-right"></i>
+                <li
+                  class="status-item breadcrumb-item"
+                  [ngClass]="{ active: orderResponse.status === 'CANCELLED' }"
+                >
+                  ĐÃ HỦY
+                </li>
+              </ul>
+            </ol>
+          </nav>
+          <h3>Thông tin người nhận</h3>
+          <div class="receiver-content">
+            <div class="mb-3">
+              <p>Họ và tên: {{ orderResponse.fullname }}</p>
+            </div>
+            <div class="mb-3">
+              <p>Email: {{ orderResponse.email }}</p>
+            </div>
+            <div class="mb-3">
+              <p>Số điện thoại: {{ orderResponse.phone_number }}</p>
+            </div>
+            <div class="mb-3">
+              <p>Địa chỉ: {{ orderResponse.address }}</p>
+            </div>
+            <div class="mb-3">
+              <p>Ghi chú: {{ orderResponse.note }}</p>
+            </div>
+            <div class="mb-3">
+              <p>Phương thức vận chuyển: {{ orderResponse.shipping_method }}</p>
+            </div>
+            <div class="mb-3">
+              <p>Phương thức thanh toán: {{ orderResponse.payment_method }}</p>
+            </div>
+          </div>
+        </div>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col" class="text-start">Sản phẩm</th>
+              <th scope="col" class="text-center">Số lượng</th>
+              <th scope="col" class="text-center">Đơn giá</th>
+              <th scope="col" class="text-center">Tổng giá</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let order of orderResponse.cart_items">
+              <tr>
+                <td>
+                  <div class="product-info">
+                    <div class="product-info-image">
+                      <img [src]="order.productId.thumbnail" />
+                    </div>
+                    <div class="product-info-name">
+                      <b>{{ order.productId.name }}</b>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-center">{{ order.numberOfProducts }}</td>
+                <td class="text-center">
+                  {{ order.price | currency : "VND" : "symbol" : "1.0-0" }}
+                </td>
+                <td class="text-center">
+                  {{
+                    order.price * order.numberOfProducts
+                      | currency : "VND" : "symbol" : "1.0-0"
+                  }}
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+        <div class="mt-3 total-price text-end">
+          Tổng tiền:
+          {{
+            orderResponse.total_money | currency : "VND" : "symbol" : "1.0-0"
+          }}
+        </div>
+        <div class="text-center mt-3">
+          <button class="btn btn-gradient" routerLink="/">
+            Tiếp tục mua hàng
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

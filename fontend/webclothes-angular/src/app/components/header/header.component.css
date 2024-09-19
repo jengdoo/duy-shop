@@ -1,0 +1,193 @@
+/* header */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+header a {
+  color: #000;
+}
+header a:hover {
+  color: #3333;
+}
+.logo-brand {
+  width: 88px;
+}
+.logo-main {
+  width: 100%;
+  clip-path: circle(50% at 50% 50%);
+}
+/* header.component.css */
+
+.nav-item {
+  position: relative;
+}
+
+.cart-info-dropdown {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  padding: 10px;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+}
+
+.nav-item:hover .cart-info-dropdown {
+  display: block;
+}
+
+.cart-item-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+.badge-count {
+  font-size: 0.75rem;
+}
+
+.cart-info-dropdown ul {
+  padding-left: 0;
+  margin: 0;
+}
+
+.cart-info-dropdown li {
+  padding: 5px 0;
+}
+
+.nav-item {
+  position: relative;
+}
+
+.cart-info-dropdown {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  padding: 10px;
+  top: 100%; /* Position below the parent */
+  left: 0;
+  z-index: 1000;
+  display: none; /* Initially hidden */
+}
+.nav-item:hover .cart-info-dropdown {
+  display: block; /* Show on hover */
+}
+
+.cart-item-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+  position: relative;
+}
+.form-info-user {
+  padding: 30px;
+}
+/* The Modal (background) */
+.dorp-user .modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  padding-top: 60px;
+}
+.dorp-user .modal-content {
+  background-color: #fefefe;
+  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button (x) */
+.dorp-user .close {
+  position: absolute;
+  right: 25px;
+  top: 0;
+  color: #000;
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.dorp-user .close:hover,
+.dorp-user .close:focus {
+  color: red;
+  cursor: pointer;
+}
+
+/* Add Zoom Animation */
+.dorp-user .animate {
+  -webkit-animation: animatezoom 0.6s;
+  animation: animatezoom 0.6s;
+}
+
+@-webkit-keyframes animatezoom {
+  from {
+    -webkit-transform: scale(0);
+  }
+  to {
+    -webkit-transform: scale(1);
+  }
+}
+
+@keyframes animatezoom {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+  .dorp-user span.psw {
+    display: block;
+    float: none;
+  }
+  .dorp-user .cancelbtn {
+    width: 100%;
+  }
+}
+.container-info {
+  background-color: #f2f2f2;
+  padding: 5px 20px 15px 20px;
+  border: 1px solid lightgrey;
+  border-radius: 3px;
+  margin-right: 28px;
+}
+.col-50 input[type="date"],
+.col-50 input[type="text"] {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+label {
+  margin-bottom: 10px;
+  display: block;
+}
+
+.icon-container {
+  margin-bottom: 20px;
+  padding: 7px 0;
+  font-size: 24px;
+}

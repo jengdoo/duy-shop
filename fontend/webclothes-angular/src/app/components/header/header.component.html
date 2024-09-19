@@ -1,0 +1,256 @@
+<header>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container">
+      <a class="navbar-brand logo-brand" href=""
+        ><img src="/image/duylogo.PNG" class="logo-main"
+      /></a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" routerLink="/"
+              >Trang chủ</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/product">Sản phẩm</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Danh mục
+            </a>
+            <ul class="dropdown-menu">
+              <li *ngFor="let category of categories">
+                <a class="dropdown-item" role="button">{{ category.name }}</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <form class="d-flex" role="search">
+          <input
+            class="form-control me-2"
+            type="search"
+            placeholder="Tìm kiếm"
+            aria-label="Search"
+          />
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+        <ul class="nav justify-content-end">
+          <li class="nav-item position-relative">
+            <a class="nav-link" routerLink="/orders">
+              <i class="fa-solid fa-cart-shopping fa-lg"></i> Giỏ hàng
+              <span
+                class="badge bg-primary position-absolute top-0 end-0 translate-middle badge-count"
+              >
+                {{ cartProductCount }}
+              </span>
+            </a>
+            <div class="cart-info-dropdown position-absolute">
+              <div *ngIf="cartItems.length === 0">Giỏ hàng trống</div>
+              <div *ngIf="cartItems.length > 0">
+                <ul class="list-unstyled">
+                  <li *ngFor="let item of getVisibleCartItems()">
+                    <div class="d-flex align-items-center">
+                      <img
+                        [src]="item.product.thumbnail"
+                        alt="{{ item.product.name }}"
+                        class="cart-item-image"
+                      />
+                      <div class="ms-2">
+                        <div>
+                          <strong>{{ item.product.name }}</strong>
+                        </div>
+                        <div>Số lượng: {{ item.quantity }}</div>
+                        <div>
+                          {{
+                            item.product.price * item.quantity
+                              | currency : "VND" : "symbol" : "1.0-0"
+                          }}
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                <div *ngIf="cartItems.length > 5" class="text-center mt-2">
+                  <a routerLink="/orders" class="btn btn-link">Xem tất cả</a>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="nav-item dorp-user" *ngIf="userResponse">
+            <a
+              class="nav-link dropdown-item"
+              role="button"
+              (click)="openModal()"
+              ><i class="fa-solid fa-circle-info"></i>
+              Thông tin
+            </a>
+            <div
+              id="id01"
+              class="modal"
+              [ngStyle]="{ display: isModalOpen ? 'block' : 'none' }"
+            >
+              <form
+                action=""
+                class="modal-content animate form-info-user"
+                (click)="$event.stopPropagation()"
+              >
+                <div class="imgcontainer" style="cursor: pointer">
+                  <span class="close" title="Close Modal" (click)="closeModal()"
+                    >×</span
+                  >
+                </div>
+                <div class="row" style="padding: 15px 10px">
+                  <div class="col-4">
+                    <img
+                      src="https://tse1.mm.bing.net/th?id=OIP.TKlY4AdOpaGbQlMqgOGWNwHaE8&pid=Api&P=0&h=220"
+                      alt="Avatar"
+                      class="avatar"
+                    />
+                  </div>
+                  <div class="col-8">
+                    <div class="container-info">
+                      <form action="/action_page.php">
+                        <div class="row">
+                          <div class="col-50">
+                            <h3 class="mt-3">Thông tin cá nhân</h3>
+                            <label for="fname"
+                              ><i class="fa fa-user"></i> Tên</label
+                            >
+                            <input
+                              type="text"
+                              id="fname"
+                              name="fullname"
+                              [value]="userResponse.fullname"
+                              placeholder="Họ và tên"
+                            />
+                            <label for="adr"
+                              ><i class="fa-solid fa-location-dot"></i> Địa
+                              chỉ</label
+                            >
+                            <input
+                              type="text"
+                              id="adr"
+                              name="address"
+                              [value]="userResponse.address"
+                              placeholder="Ngách a ngõ b ..."
+                            />
+                            <label for="date">
+                              <i class="fas fa-calendar-alt"></i>Ngày sinh
+                            </label>
+                            <input
+                              type="date"
+                              id="date"
+                              name="date_of_birth"
+                              [value]="
+                                userResponse.date_of_birth | date : 'yyyy-MM-dd'
+                              "
+                            />
+                            <label for="phone"
+                              ><i class="fa-solid fa-phone"></i> Số điện
+                              thoại</label
+                            >
+                            <input
+                              type="text"
+                              id="phone"
+                              name="address"
+                              [value]="userResponse.phone_number"
+                              placeholder="+84 ...."
+                            />
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="radio"
+                                [value]="true"
+                                name="is_active"
+                                id="flexRadioDefault1"
+                                [(ngModel)]="userResponse.is_active"
+                              />
+                              <label
+                                class="form-check-label"
+                                for="flexRadioDefault1"
+                              >
+                                Hoạt động
+                              </label>
+                            </div>
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="radio"
+                                [value]="false"
+                                name="is_active"
+                                id="flexRadioDefault2"
+                                [(ngModel)]="userResponse.is_active"
+                              />
+                              <label
+                                class="form-check-label"
+                                for="flexRadioDefault2"
+                              >
+                                Không hoạt động
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="text-end">
+                          <button class="btn btn-primary">Cập nhật</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </li>
+          <li
+            class="nav-item dropdown"
+            *ngIf="userResponse; else loggedOut"
+            style="cursor: pointer"
+          >
+            <a
+              class="nav-link"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+            >
+              <i class="fa-solid fa-user fa-lg"></i>
+              {{ userResponse.fullname }}
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item" routerLink="/bills">Đơn mua của tôi</a>
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="logout()">Đăng xuất</a>
+              </li>
+            </ul>
+          </li>
+          <ng-template #loggedOut>
+            <!-- Nội dung khi người dùng chưa đăng nhập -->
+            <li class="nav-item">
+              <a class="nav-link" href="/login">Đăng nhập</a>
+            </li>
+            <!-- <li class="nav-item">
+              <a class="nav-link" href="/login">Đăng ký</a>
+            </li> -->
+          </ng-template>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
