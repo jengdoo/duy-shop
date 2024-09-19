@@ -47,6 +47,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public Category findById(Long id) {
+        return categoryRepo.findById(id).orElseThrow(()->new RuntimeException("Không tìm thấy danh mục với id:"+id));
+    }
+
+    @Override
     public Page<CategoryResponse> pageCategory(String keyword, Pageable pageable) {
         Page<Category> categoryPage =categoryRepo.findByKeywordCategory(keyword,pageable);
         return categoryPage.map(CategoryResponse::convertCategoryResponse);

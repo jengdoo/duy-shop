@@ -183,10 +183,12 @@ public class ProductController {
         }
     }
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteCategory(@RequestParam long id){
+    public ResponseEntity<?> deleteCategory(@RequestParam long id){
         try {
             productService.deleteProduct(id);
-            return  ResponseEntity.ok("delete product success with by id = " + id);
+            Map<String,Object> response = new HashMap<>();
+            response.put("Xóa thành công với id:",id);
+            return  ResponseEntity.ok(response);
         }catch (Exception e){
 
             return ResponseEntity.badRequest().body(e.getMessage());

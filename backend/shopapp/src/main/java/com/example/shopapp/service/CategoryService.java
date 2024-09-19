@@ -14,5 +14,6 @@ public interface CategoryService {
     List<Category> getAllCategories();
     Category updateCategory(Long id,CategoryDTO categoryDTO);
     void deleteCategory(Long id);
+    Category findById(Long id);
     Page<CategoryResponse> pageCategory(String keyword, Pageable pageable);
 }
