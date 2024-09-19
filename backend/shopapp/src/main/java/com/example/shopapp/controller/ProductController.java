@@ -46,7 +46,6 @@ import java.util.stream.Collectors;
 public class ProductController {
     private final ProductService productService;
     private final LocalizationUtil localizationUtil;
-
     @GetMapping("")
     public ResponseEntity<?> getProduct(@RequestParam(defaultValue = "") String name,
                                                           @RequestParam(defaultValue = "", value = "category_id") Long categoryId,
@@ -54,7 +53,6 @@ public class ProductController {
                                                           @RequestParam(defaultValue = "10") int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize, Sort.by("id").ascending());
         Page<ProductResponse> productPage = productService.getAllProducts(categoryId, name, pageable);
-
         int totalPage = productPage.getTotalPages();
     @GetMapping("/list")
     public ResponseEntity<ProductListResponse> getProduct(@RequestParam int page, @RequestParam int pageSize){
@@ -64,7 +62,6 @@ public class ProductController {
         int pageCurrent = productPage.getNumber();
         int pageSizeCurrent = productPage.getSize();
         List<ProductResponse> products = productPage.getContent();
-
         return ResponseEntity.ok(ProductListResponse.builder()
                 .productResponseList(products)
                 .page(pageCurrent)
@@ -98,7 +95,6 @@ public class ProductController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
     @PostMapping(value = "uploads/{id}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> uploadImages(@PathVariable("id") Long productId,@ModelAttribute("files") List<MultipartFile> files){
         try {
@@ -172,7 +168,6 @@ public class ProductController {
         }
         return contentType.startsWith("image/");
     }
-
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateCategory(@PathVariable long id,@Valid @RequestBody ProductDTO productDTO,BindingResult result){
         try {
@@ -188,10 +183,12 @@ public class ProductController {
         }
     }
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteCategory(@RequestParam long id){
+    public ResponseEntity<?> deleteCategory(@RequestParam long id){
         try {
             productService.deleteProduct(id);
-            return  ResponseEntity.ok("delete product success with by id = " + id);
+            Map<String,Object> response = new HashMap<>();
+            response.put("Xóa thành công với id:",id);
+            return  ResponseEntity.ok(response);
         }catch (Exception e){
 
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -221,7 +218,6 @@ public class ProductController {
         if (ids == null || ids.trim().isEmpty()) {
             return ResponseEntity.badRequest().body("Tham số 'ids' không được rỗng.");
         }
-
         try {
             // Chuyển đổi tham số ids thành danh sách các ID sản phẩm
             List<Long> productIds = Arrays.stream(ids.split(","))
@@ -233,15 +229,10 @@ public class ProductController {
                         }
                     })
                     .collect(Collectors.toList());
-
             // Tìm các sản phẩm dựa trên danh sách ID
             List<Product> products = productService.findProductsByIds(productIds);
-
-            // Trả về danh sách sản phẩm
             return ResponseEntity.ok(products.stream().map(ProductResponse::convertResponse));
-
         } catch (IllegalArgumentException e) {
-            // Trả về lỗi nếu ID không hợp lệ
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             // Xử lý các lỗi khác
