@@ -3,6 +3,7 @@ import { OrderService } from '../../../service/order.service';
 import { Product } from '../../../models/product';
 import { ProductService } from '../../../service/product.service';
 import { environment } from '../../../environments/environment';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'product-admin',
@@ -18,7 +19,10 @@ export class ProductAdminComponent implements OnInit {
   visiblePages: number[] = [];
   selectedCategoryId: number = 0;
   product?: Product;
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private snackBar: MatSnackBar
+  ) {}
   ngOnInit(): void {
     this.getAdminProducts(
       this.keyword,
@@ -78,5 +82,29 @@ export class ProductAdminComponent implements OnInit {
     return new Array(endPage - startPage + 1)
       .fill(0)
       .map((_, index) => startPage + index);
+  }
+  deleteProduct(productId: number) {
+    this.productService.deleteProduct(productId).subscribe({
+      next: (response) => {
+        this.getAdminProducts(
+          this.keyword,
+          this.selectedCategoryId,
+          this.currentPage,
+          this.itemsPePage
+        );
+        this.showMessage('Xóa sản phẩm thành công');
+      },
+      error: (error: any) => {
+        this.showMessage('Xóa sản phẩm thất bại');
+      },
+    });
+  }
+  private showMessage(message: string) {
+    this.snackBar.open(message, 'Đóng', {
+      duration: 3000, // Thời gian hiển thị thông báo (3 giây)
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: ['success-snackbar'],
+    });
   }
 }

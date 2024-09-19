@@ -23,4 +23,20 @@ export class CategoryService {
     debugger;
     return this.http.post(this.apiCreateCategory, categoryDTO);
   }
+  deleteCategory(categoryId: number): Observable<any> {
+    return this.http.delete(`${this.apiCategory}/delete?id=${categoryId}`);
+  }
+  findById(categoryId: number): Observable<any> {
+    debugger;
+    return this.http.get(`${this.apiCategory}/finById?id=${categoryId}`);
+  }
+  updateCategory(
+    categoryId: number,
+    categoryResponse: CategoryResponse
+  ): Observable<CategoryResponse> {
+    return this.http.put<CategoryResponse>(
+      `${this.apiCategory}/update/${categoryId}`,
+      categoryResponse
+    );
+  }
 }

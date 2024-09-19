@@ -31,7 +31,9 @@
               </div>
             </td>
             <td>
-              <button class="btn btn-danger">Delete</button>
+              <button class="btn btn-danger" (click)="deleteProduct(item.id)">
+                Delete
+              </button>
             </td>
           </tr>
         </ng-container>

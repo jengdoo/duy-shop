@@ -1,9 +1,9 @@
-import { ProductDTO } from './../dtos/products/product.dto';
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product';
+import { ProductDTO } from '../dtos/products/product.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -46,5 +46,8 @@ export class ProductService {
   }
   createProduct(productDTO: ProductDTO): Observable<any> {
     return this.http.post(this.apiCreateProduct, productDTO);
+  }
+  deleteProduct(productId: number): Observable<any> {
+    return this.http.delete(`${this.apiGetProduct}/delete?id=${productId}`);
   }
 }

@@ -52,7 +52,7 @@ export const routes: Routes = [
         canActivate: [AdminGuardFn],
       },
       {
-        path: 'category/update',
+        path: 'category/update/:id',
         component: CategoryUpdateAdminComponent,
         canActivate: [AdminGuardFn],
       },
