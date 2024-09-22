@@ -34,7 +34,7 @@ public class CategoryController {
     private final CategoryService categoryService;
     private final LocalizationUtil localizationUtil;
 
-    @GetMapping()
+    @GetMapping("")
     public ResponseEntity<List<Category>> getAllCategory(){
         List<Category> categories = categoryService.getAllCategories();
         return ResponseEntity.ok(categories);

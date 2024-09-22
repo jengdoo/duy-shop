@@ -48,17 +48,12 @@ public class ProductController {
     private final LocalizationUtil localizationUtil;
     @GetMapping("")
     public ResponseEntity<?> getProduct(@RequestParam(defaultValue = "") String name,
-                                                          @RequestParam(defaultValue = "", value = "category_id") Long categoryId,
-                                                          @RequestParam(defaultValue = "0") int page,
-                                                          @RequestParam(defaultValue = "10") int pageSize) {
+                                        @RequestParam(defaultValue = "", value = "category_id") Long categoryId,
+                                        @RequestParam(defaultValue = "0") int page,
+                                        @RequestParam(defaultValue = "10") int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize, Sort.by("id").ascending());
         Page<ProductResponse> productPage = productService.getAllProducts(categoryId, name, pageable);
         int totalPage = productPage.getTotalPages();
-    @GetMapping("/list")
-    public ResponseEntity<ProductListResponse> getProduct(@RequestParam int page, @RequestParam int pageSize){
-        PageRequest pageRequest = PageRequest.of(page,pageSize, Sort.by("id").ascending());
-        Page<ProductResponse> productPage = productService.getAllProducts(pageRequest);
-        int totalPage =productPage.getTotalPages();
         int pageCurrent = productPage.getNumber();
         int pageSizeCurrent = productPage.getSize();
         List<ProductResponse> products = productPage.getContent();
