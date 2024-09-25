@@ -69,9 +69,16 @@ public class WebSecurityConfig {
                                     .requestMatchers(HttpMethod.DELETE,String.format("%s/order_details/**",apiPrefix)).hasRole(Role.ADMIN)
                                     .requestMatchers(HttpMethod.PUT,String.format("%s/order_details/**",apiPrefix)).hasRole(Role.ADMIN)
 
+//                                    .requestMatchers(HttpMethod.POST,String.format("%s/payment/**",apiPrefix)).hasAnyRole(Role.USER,Role.ADMIN)
+                                    .requestMatchers(HttpMethod.POST,String.format("%s/payment/**",apiPrefix)).permitAll()
+//                                    .requestMatchers(HttpMethod.GET,String.format("%s/payment/**",apiPrefix)).hasAnyRole(Role.USER,Role.ADMIN)
+                                    .requestMatchers(HttpMethod.GET, String.format("%s/payment/payment-callback/**", apiPrefix)).permitAll()
+
+
                                     .requestMatchers(HttpMethod.POST,String.format("%s/users/details/**",apiPrefix)).hasAnyRole(Role.USER,Role.ADMIN)
                                     .requestMatchers(HttpMethod.GET,String.format("%s/users/userId/**",apiPrefix)).hasAnyRole(Role.USER,Role.ADMIN)
-                                    .anyRequest().authenticated();
+                                    .anyRequest().authenticated()
+                            ;
                 })
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors

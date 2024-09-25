@@ -1,6 +1,7 @@
 package com.example.shopapp.service.implement;
 
 import com.example.shopapp.Model.*;
+import com.example.shopapp.config.VNPayConfig;
 import com.example.shopapp.dto.CartItemDTO;
 import com.example.shopapp.dto.OrderDTO;
 import com.example.shopapp.dto.OrderDetailDTO;
@@ -95,7 +96,9 @@ public class OrderServiceImpl implements OrderService {
             // Thêm OrderDetail vào danh sách
             orderDetails.add(orderDetail);
         }
-
+        String txnRef = VNPayConfig.getRandomNumber(8); // Tạo mã giao dịch từ ID của đơn hàng
+        order.setTxnRef(txnRef);
+        orderRepo.save(order);
         // Lưu tất cả OrderDetail
         orderDetailRepo.saveAll(orderDetails);
 

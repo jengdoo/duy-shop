@@ -53,6 +53,10 @@ public class Order {
     private String paymentMethod;
     @Column(name = "active")
     private Boolean active;
+    @Column(name = "txn_ref") // Thêm thuộc tính này
+    private String txnRef;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<Payment> payments;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderDetail> orderDetails = new ArrayList<>();
 }

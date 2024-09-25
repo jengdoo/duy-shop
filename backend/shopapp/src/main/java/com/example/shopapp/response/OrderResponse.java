@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -49,6 +50,29 @@ public class OrderResponse{
     private boolean active;
     @JsonProperty("cart_items")
     private List<OrderDetailResponse> orderDetailResponses;
+
+    public OrderResponse(Order order) {
+        this.id = order.getId();
+        this.userId = order.getUser().getId(); // Giả sử bạn có getter cho user
+        this.fullName = order.getFullName();
+        this.email = order.getEmail();
+        this.phoneNumber = order.getPhoneNumber();
+        this.address = order.getAddress();
+        this.note = order.getNote();
+        this.orderDate = order.getOrderDate();
+        this.status = order.getStatus();
+        this.totalMoney = order.getTotalMoney();
+        this.shippingMethod = order.getShippingMethod();
+        this.shippingAddress = order.getShippingAddress();
+        this.shippingDate = order.getShippingDate();
+        this.trackingNumber = order.getTrackingNumber();
+        this.paymentMethod = order.getPaymentMethod();
+        this.active = order.getActive();
+        this.orderDetailResponses = order.getOrderDetails()
+                .stream()
+                .map(OrderDetailResponse::new) // Chuyển đổi từng OrderDetail thành OrderDetailResponse
+                .collect(Collectors.toList());
+    }
 
     public static OrderResponse convertRespo(Order order){
         return OrderResponse.builder()

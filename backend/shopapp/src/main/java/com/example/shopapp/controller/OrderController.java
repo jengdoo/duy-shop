@@ -2,10 +2,13 @@ package com.example.shopapp.controller;
 import com.example.shopapp.Model.Order;
 import com.example.shopapp.components.LocalizationUtil;
 import com.example.shopapp.dto.OrderDTO;
+import com.example.shopapp.dto.PaymentDTO;
 import com.example.shopapp.response.OrderListResponse;
+import com.example.shopapp.response.OrderPaymentResponse;
 import com.example.shopapp.response.OrderResponse;
 import com.example.shopapp.response.OrderResponseNew;
 import com.example.shopapp.service.OrderService;
+import com.example.shopapp.service.PaymentService;
 import com.example.shopapp.utils.MessageKeys;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,16 +32,37 @@ import java.util.List;
 public class OrderController {
     private final OrderService orderService;
     private final LocalizationUtil localizationUtil;
+    private final PaymentService paymentService;
     @PostMapping("")
-    public ResponseEntity<?> createdOrder(@Valid @RequestBody OrderDTO orderDTO, BindingResult result){
+    public ResponseEntity<?> createdOrder(@Valid @RequestBody OrderDTO orderDTO, BindingResult result) {
         try {
-            if(result.hasErrors()){
-                List<String> messageError = result.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList();
+            if (result.hasErrors()) {
+                List<String> messageError = result.getFieldErrors().stream()
+                        .map(FieldError::getDefaultMessage)
+                        .toList();
                 return ResponseEntity.badRequest().body(messageError);
             }
+
+            // Tạo đơn hàng
             OrderResponse orderResponse = orderService.createOrder(orderDTO);
+            if ("cod".equals(orderDTO.getPaymentMethod())) {
+                // Nếu phương thức thanh toán là COD, không cần tạo payment
                 return ResponseEntity.status(HttpStatus.CREATED).body(orderResponse);
-        }catch (Exception e){
+            } else if ("vnpay".equals(orderDTO.getPaymentMethod())) {
+                // Nếu là VNPay, tạo payment
+               if(orderResponse.getId()!=null||orderResponse.getId()==orderDTO.getId()){
+                   PaymentDTO paymentDTO = paymentService.createPayment(orderResponse);
+                   // Chỉ trả về URL thanh toán nếu tạo payment thành công
+                   return ResponseEntity.status(HttpStatus.CREATED)
+                           .body(new OrderPaymentResponse(orderResponse, paymentDTO.getPaymentUrl()));
+               }
+               else {
+                   return ResponseEntity.badRequest().body("Invalid payment method");
+               }
+            } else {
+                return ResponseEntity.badRequest().body("Invalid payment method");
+            }
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
