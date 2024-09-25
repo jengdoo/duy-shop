@@ -14,6 +14,7 @@ export class CategoryService {
   private apiCreateCategory = `${environment.apiBaseUrl}/category/add`;
   constructor(private http: HttpClient) {}
   getCategory(): Observable<Category[]> {
+    debugger;
     return this.http.get<Category[]>(this.apiCategory);
   }
   getCategoryAdmin(): Observable<CategoryResponse[]> {

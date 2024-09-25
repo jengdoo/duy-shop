@@ -1,0 +1,59 @@
+.payment-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+  height: 100vh;
+}
+
+.result-card {
+  padding: 20px;
+  border-radius: 8px;
+  margin: 10px 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 400px; /* Đặt chiều rộng tối đa */
+  width: 100%; /* Đảm bảo nó không vượt quá 100% chiều rộng */
+}
+
+.result-card-success {
+  background-color: #d4edda; /* Màu nền sáng cho thành công */
+  color: #155724; /* Chữ màu xanh lá cây đậm */
+}
+
+.result-card-failed {
+  background-color: #f8d7da; /* Màu nền sáng cho thất bại */
+  color: #721c24; /* Chữ màu đỏ đậm */
+}
+
+.button-group {
+  margin-top: 15px;
+}
+
+.btn {
+  margin: 5px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-primary {
+  background-color: #007bff; /* Xanh dương */
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3; /* Xanh dương đậm */
+}
+
+.btn-secondary {
+  background-color: #6c757d; /* Xám */
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268; /* Xám đậm */
+}

@@ -1,5 +1,8 @@
 <div class="container mt-5">
   <h2 class="text-center mb-4">Thêm sản phẩm</h2>
+  <div>
+    <zxing-scanner (scanSuccess)="onScanSuccess($event)"></zxing-scanner>
+  </div>
   <form
     [formGroup]="productForm"
     (ngSubmit)="onSubmit()"

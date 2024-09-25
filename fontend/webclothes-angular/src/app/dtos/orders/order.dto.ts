@@ -1,4 +1,5 @@
 export class OrderDTO {
+  id: number;
   user_id: number;
   fullname: string;
   email: string;
@@ -12,6 +13,7 @@ export class OrderDTO {
   cart_items: { product_id: number; quantity: number }[];
 
   constructor(data: any) {
+    this.id = data.id || 0;
     this.user_id = data.user_id || 0;
     this.fullname = data.fullname || '';
     this.email = data.email || '';

@@ -26,6 +26,10 @@ import { ProductAdminComponent } from './components/admin/product/product.admin.
 import { CategoryAdminComponent } from './components/admin/category/category.admin.component';
 import { ProductCrateAdminComponent } from './components/admin/product/create/create.product.admin.component';
 import { CategoryUpdateAdminComponent } from './components/admin/category/update/update.category.admin.component';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { QrcodeComponent } from './components/admin/qrcode/qrcode.component';
+import { PaymentResultComponent } from './components/payment-result/payment-result.component';
+import { CommonModule } from '@angular/common';
 // Định nghĩa các route
 // const routes: Routes = [
 //   { path: '', component: LoginComponent },
@@ -51,7 +55,8 @@ import { CategoryUpdateAdminComponent } from './components/admin/category/update
     CategoryAdminComponent,
     ProductCrateAdminComponent,
     CategoryUpdateAdminComponent,
-    // Các thành phần khác nếu cần
+    QrcodeComponent,
+    PaymentResultComponent,
   ],
   imports: [
     MatSnackBarModule,
@@ -63,6 +68,7 @@ import { CategoryUpdateAdminComponent } from './components/admin/category/update
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
+    ZXingScannerModule,
   ],
   providers: [
     {
@@ -72,6 +78,6 @@ import { CategoryUpdateAdminComponent } from './components/admin/category/update
     },
     provideAnimationsAsync(),
   ],
-  bootstrap: [AppComponent], // Thành phần khởi động chính của ứng dụng
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

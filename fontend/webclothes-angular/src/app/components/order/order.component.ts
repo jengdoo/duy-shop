@@ -15,6 +15,8 @@ import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.comp
 import { Route, Router } from '@angular/router';
 import { TokenService } from '../../service/token.service';
 import { OrderResponse } from '../../response/oder/order.response';
+import { PaymentService } from '../../service/payment.service';
+import { PaymentDTO } from '../../dtos/payment/payment.dto';
 
 @Component({
   selector: 'app-order',
@@ -28,9 +30,11 @@ export class OrderComponent implements OnInit {
   cartItems: { product: Product; quantity: number }[] = [];
   couponCode: string = '';
   totalAmount: number = 0;
-
+  oderId: number = 0;
+  paymentDTO: PaymentDTO | undefined;
   orderData: OrderDTO = {
-    user_id: 3, // Giả sử user_id là 3, thay thế bằng giá trị thực tế
+    id: 0,
+    user_id: 0,
     fullname: '',
     email: '',
     phone_number: '',
@@ -51,7 +55,8 @@ export class OrderComponent implements OnInit {
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
     private router: Router,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private paymentService: PaymentService
   ) {
     this.orderForm = this.fb.group({
       fullname: ['', Validators.required],
@@ -155,7 +160,6 @@ export class OrderComponent implements OnInit {
   }
 
   placeOrder(): void {
-    debugger;
     if (this.orderForm.valid) {
       this.orderData = {
         ...this.orderData,
@@ -164,27 +168,47 @@ export class OrderComponent implements OnInit {
           product_id: cartItem.product.id,
           quantity: cartItem.quantity,
         })),
-        total_money: this.totalAmount, // Sử dụng biến totalAmount cho tổng tiền
+        total_money: this.totalAmount,
       };
-
+      // Gọi API để tạo đơn hàng trước
       this.orderService.placeOrder(this.orderData).subscribe({
-        next: (response: OrderDTO) => {
+        next: (response: any) => {
           debugger;
-          console.log('Order placed successfully:', response);
-          this.showSuccessMessage();
-          this.clearCart();
-          this.router.navigate(['/']);
+          this.oderId = response.order.id;
+          // Kiểm tra phương thức thanh toán
+          if (this.orderData.payment_method === 'cod') {
+            debugger;
+            this.showSuccessMessage();
+            this.clearCart();
+            this.router.navigate(['/']);
+          } else {
+            if (response.order.id && response.order.id > 0) {
+              debugger;
+              this.paymentService
+                .createPayment({
+                  order_id: response.order.id,
+                  paymentMethod: this.orderData.payment_method,
+                })
+                .subscribe({
+                  next: (response: PaymentDTO) => {
+                    debugger;
+                    window.location.href = response.paymentUrl;
+                  },
+                  error: (error) => {
+                    debugger;
+                    console.error('Error during payment:', error);
+                    this.showErrorMessage(
+                      'Lỗi trong quá trình thanh toán. Vui lòng thử lại.'
+                    );
+                  },
+                });
+            } else {
+              this.showErrorMessage('ID đơn hàng không hợp lệ.');
+            }
+          }
         },
         error: (error) => {
-          debugger;
-          if (error.error) {
-            // Xử lý thông báo lỗi tùy chỉnh dựa trên thông báo lỗi từ server
-            this.showErrorMessage(
-              'Sản phẩm tồn kho ít hơn hoặc hết, bạn có thể mua ít hơn hoặc chọn sản phẩm khác.'
-            );
-          } else {
-            this.showErrorMessage(); // Hiển thị thông báo lỗi mặc định nếu không có thông tin chi tiết
-          }
+          this.showErrorMessage('Đặt hàng thất bại. Vui lòng thử lại.');
         },
       });
     } else {

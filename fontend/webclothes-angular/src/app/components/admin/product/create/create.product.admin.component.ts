@@ -15,6 +15,8 @@ import { Category } from '../../../../models/category';
 export class ProductCrateAdminComponent implements OnInit {
   productForm: FormGroup;
   categories: Category[] = [];
+  scannedData: string = '';
+  orderId?: number;
   constructor(
     private fb: FormBuilder,
     private productService: ProductService,
@@ -44,6 +46,7 @@ export class ProductCrateAdminComponent implements OnInit {
           debugger;
           console.log('Product created successfully', response);
           this.showMessage('Thêm sản phẩm thành công');
+          this.productForm.reset();
           this.router.navigate(['admin/products']);
         },
         complete: () => {
@@ -58,6 +61,36 @@ export class ProductCrateAdminComponent implements OnInit {
           this.showMessage('Thêm sản phẩm thất bại!');
         },
       });
+    }
+  }
+  onScanSuccess(result: string) {
+    const productDTO = JSON.parse(result);
+    this.productForm.patchValue(productDTO); // Tự động điền dữ liệu vào form
+
+    // Gọi API thêm sản phẩm
+    this.productService.createProduct(this.productForm.value).subscribe({
+      next: (response: any) => {
+        this.showMessage('Thêm sản phẩm thành công');
+        this.productForm.reset(); // Reset form sau khi thêm
+        this.router.navigate(['admin/products']);
+      },
+      error: (error) => {
+        this.showMessage('Thêm sản phẩm thất bại!');
+      },
+    });
+  }
+  private populateForm(qrData: string) {
+    try {
+      const data = JSON.parse(qrData);
+      this.productForm.patchValue({
+        name: data.name,
+        price: data.price,
+        quantity: data.quantity,
+        description: data.description,
+        category_id: data.categoryId,
+      });
+    } catch (error) {
+      console.error('Invalid QR code data', error);
     }
   }
   private showMessage(message: string) {

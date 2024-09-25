@@ -14,6 +14,8 @@ import { ProductAdminComponent } from './components/admin/product/product.admin.
 import { CategoryAdminComponent } from './components/admin/category/category.admin.component';
 import { ProductCrateAdminComponent } from './components/admin/product/create/create.product.admin.component';
 import { CategoryUpdateAdminComponent } from './components/admin/category/update/update.category.admin.component';
+import { QrcodeComponent } from './components/admin/qrcode/qrcode.component';
+import { PaymentResultComponent } from './components/payment-result/payment-result.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -26,6 +28,7 @@ export const routes: Routes = [
     canActivate: [AuthGuardFn],
   },
   { path: 'bills', component: BillComponent, canActivate: [AuthGuardFn] },
+  { path: 'payment/payment-callback', component: PaymentResultComponent },
   {
     path: 'admin',
     component: AdminComponent,
@@ -54,6 +57,11 @@ export const routes: Routes = [
       {
         path: 'category/update/:id',
         component: CategoryUpdateAdminComponent,
+        canActivate: [AdminGuardFn],
+      },
+      {
+        path: 'qrcode',
+        component: QrcodeComponent,
         canActivate: [AdminGuardFn],
       },
     ],
