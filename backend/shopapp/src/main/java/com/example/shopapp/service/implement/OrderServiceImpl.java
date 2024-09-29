@@ -15,19 +15,17 @@ import com.example.shopapp.response.OrderResponseNew;
 import com.example.shopapp.service.OrderService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -58,9 +56,12 @@ public class OrderServiceImpl implements OrderService {
             throw new DataNotFoundException("Date must be at least today!");
         }
         order.setShippingDate(shippingDate);
-        order.setActive(true);
+        if(order.getPaymentMethod().equals("cod")){
+            order.setActive(false);
+        }else {
+            order.setActive(true);
+        }
         order.setTotalMoney(orderDTO.getTotalMoney());
-
         // Lưu đơn hàng
         orderRepo.save(order);
 
