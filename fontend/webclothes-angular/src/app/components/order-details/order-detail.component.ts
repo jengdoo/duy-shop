@@ -13,8 +13,6 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-order-confirm',
-  // standalone: true,
-  // imports: [HeaderComponent, FooterComponent],
   templateUrl: './order-detail.component.html',
   styleUrl: './order-detail.component.css',
 })
@@ -56,8 +54,6 @@ export class OrderConfirmComponent implements OnInit {
   getOrderDetails(orderId: number) {
     this.orderService.getOrderById(orderId).subscribe({
       next: (response: any) => {
-        console.log('Order Details Response:', response); // Kiểm tra cấu trúc dữ liệu
-
         this.orderResponse = {
           ...this.orderResponse,
           id: response.id,

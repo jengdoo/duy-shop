@@ -96,7 +96,6 @@ export class OrderComponent implements OnInit {
       next: (products) => {
         debugger;
         console.log('Products:', products); // Kiểm tra dữ liệu sản phẩm ở đây
-
         // Ánh xạ các sản phẩm với giỏ hàng
         this.cartItems = Array.from(cart.entries()).map(
           ([productId, quantity]) => {
@@ -115,7 +114,6 @@ export class OrderComponent implements OnInit {
             }
           }
         );
-
         // Tính tổng tiền của giỏ hàng
         this.calculateTotal();
       },
@@ -174,8 +172,6 @@ export class OrderComponent implements OnInit {
       this.orderService.placeOrder(this.orderData).subscribe({
         next: (response: any) => {
           debugger;
-          this.oderId = response.order.id;
-          // Kiểm tra phương thức thanh toán
           if (this.orderData.payment_method === 'cod') {
             debugger;
             this.showSuccessMessage();
@@ -193,6 +189,7 @@ export class OrderComponent implements OnInit {
                   next: (response: PaymentDTO) => {
                     debugger;
                     window.location.href = response.paymentUrl;
+                    this.clearCart();
                   },
                   error: (error) => {
                     debugger;

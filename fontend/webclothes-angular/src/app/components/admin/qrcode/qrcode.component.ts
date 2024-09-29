@@ -8,13 +8,12 @@ export class QrcodeComponent implements OnInit {
   qrCodeUrl: string = '';
   ngOnInit(): void {
     const productDTO = {
-      name: 'Sản phẩm mẫu',
-      price: 100,
-      quantity: 5,
+      name: 'Sản phẩm B',
+      price: 100000,
+      quantity: 1000,
       description: 'Mô tả sản phẩm',
-      category_id: 1,
+      category_id: 2,
     };
-
     this.generateQRCode(productDTO);
   }
   generateQRCode(productDTO: any) {
